@@ -13,7 +13,10 @@ export async function listActivity({ page = 1, limit = 30 }) {
     `SELECT
        al.*,
        u.name AS user_name,
-       c.name AS customer_name
+       c.name AS customer_name,
+       c.phone AS customer_phone,
+       c.block AS customer_block,
+       c.house_number AS customer_house_number
      FROM activity_log al
      LEFT JOIN users u ON u.id = al.user_id
      LEFT JOIN customers c ON c.id = al.customer_id

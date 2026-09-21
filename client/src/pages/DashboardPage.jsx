@@ -17,6 +17,8 @@ import {
   Clock,
   ArrowRight,
   UserCheck,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 export default function DashboardPage({ setActivePage, onSelectCustomer }) {
@@ -29,6 +31,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
   const [recentActivities, setRecentActivities] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isActivityOpen, setIsActivityOpen] = useState(false);
   const [, startTransition] = useTransition();
 
   // Modals state
@@ -42,7 +45,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
       const [sumRes, debtorsRes, actRes] = await Promise.all([
         dashboardAPI.getSummary(),
         dashboardAPI.getTopDebtors(100),
-        activityAPI.list({ limit: 6 }),
+        activityAPI.list({ limit: 25 }),
       ]);
 
       setSummary(sumRes.data);
@@ -108,14 +111,14 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
           </p>
         </div>
 
-        {/* 2 Big Primary Action Buttons */}
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+        {/* 2 Big Primary Action Buttons (Responsive grid on mobile, flex on desktop) */}
+        <div className="hero-action-buttons">
           <button
             className="btn btn-primary"
             onClick={(e) => handleOpenCredit(e, null)}
-            style={{ padding: '0.75rem 1.4rem', fontSize: '1rem', fontWeight: 600 }}
+            style={{ padding: '0.65rem 1.15rem', fontSize: '0.95rem', fontWeight: 600 }}
           >
-            <PlusCircle size={20} />
+            <PlusCircle size={18} />
             <span>{t('dashboard.recordCredit')}</span>
           </button>
 
@@ -124,14 +127,14 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
             style={{
               background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
               color: '#ffffff',
-              padding: '0.75rem 1.4rem',
-              fontSize: '1rem',
+              padding: '0.65rem 1.15rem',
+              fontSize: '0.95rem',
               fontWeight: 600,
               boxShadow: '0 4px 14px rgba(14, 165, 233, 0.35)',
             }}
             onClick={(e) => handleOpenPayment(e, null)}
           >
-            <Receipt size={20} />
+            <Receipt size={18} />
             <span>{t('dashboard.receivePayment')}</span>
           </button>
         </div>
@@ -221,29 +224,19 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                 <div
                   key={debtor.id}
                   onClick={() => onSelectCustomer(debtor.id)}
-                  className="card card-hover"
-                  style={{
-                    padding: '1rem 1.25rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: '1rem',
-                    background: 'var(--bg-surface-elevated)',
-                  }}
+                  className="debtor-card"
                 >
-                  {/* Left: Customer Info */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: '1 1 240px' }}>
+                  {/* Left / Top: Customer Info */}
+                  <div className="debtor-card-info">
                     <div
                       className="customer-avatar"
-                      style={{ width: '42px', height: '42px', fontSize: '1.1rem' }}
+                      style={{ width: '40px', height: '40px', fontSize: '1.05rem' }}
                     >
                       {debtor.name.charAt(0).toUpperCase()}
                     </div>
 
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: '1.02rem', color: 'var(--text-primary)' }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {debtor.name}
                       </div>
 
@@ -251,23 +244,23 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '0.75rem',
-                          fontSize: '0.8125rem',
+                          gap: '0.65rem',
+                          fontSize: '0.8rem',
                           color: 'var(--text-secondary)',
-                          marginTop: '0.2rem',
+                          marginTop: '0.15rem',
                           flexWrap: 'wrap',
                         }}
                       >
                         {debtor.phone && (
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <Phone size={13} />
+                            <Phone size={12} />
                             <span>{debtor.phone}</span>
                           </span>
                         )}
 
                         {(debtor.block || debtor.house_number) && (
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                            <MapPin size={13} />
+                            <MapPin size={12} />
                             <span>
                               {debtor.block ? `${debtor.block}` : ''}
                               {debtor.block && debtor.house_number ? ' ' : ''}
@@ -279,30 +272,21 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                     </div>
                   </div>
 
-                  {/* Right: Debt amount and 2 fast action buttons */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1.25rem',
-                      flexWrap: 'wrap',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
-                    <div style={{ textAlign: 'right', minWidth: '100px' }}>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--color-danger)', fontWeight: 600 }}>
+                  {/* Right / Bottom: Debt amount and fast action buttons */}
+                  <div className="debtor-card-actions">
+                    <div>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--color-danger)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         {t('dashboard.debt')}
                       </div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-danger)' }}>
+                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-danger)', lineHeight: 1.1 }}>
                         {formatCurrency(bal)}
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={(e) => handleOpenPayment(e, debtor.id)}
-                        style={{ padding: '0.45rem 0.85rem' }}
                       >
                         <Receipt size={14} />
                         <span>{t('dashboard.pay')}</span>
@@ -311,7 +295,6 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                       <button
                         className="btn btn-sm btn-secondary"
                         onClick={(e) => handleOpenCredit(e, debtor.id)}
-                        style={{ padding: '0.45rem 0.85rem' }}
                       >
                         <PlusCircle size={14} />
                         <span>{t('dashboard.addMoreCredit')}</span>
@@ -325,48 +308,223 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
         )}
       </div>
 
-      {/* Recent Activity Timeline at the bottom */}
-      <div className="card" style={{ padding: '1.25rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-          <h2 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-primary)' }}>
-            {t('dashboard.recentActivity')}
-          </h2>
-          <button
-            className="btn btn-sm btn-secondary"
-            onClick={() => setActivePage('activity')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
-          >
-            <span>{t('dashboard.viewAll')}</span>
-            <ArrowRight size={14} />
-          </button>
+      {/* Recent Activity Dropdown Accordion (Touch to drop down today's activities) */}
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        {/* Clickable / Touchable Dropdown Header */}
+        <div
+          onClick={() => setIsActivityOpen(!isActivityOpen)}
+          style={{
+            padding: '1rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            cursor: 'pointer',
+            userSelect: 'none',
+            background: isActivityOpen ? 'var(--bg-surface-elevated)' : 'transparent',
+            transition: 'background var(--transition-fast)',
+          }}
+        >
+          {(() => {
+            const todayDateStr = new Date().toISOString().split('T')[0];
+            const todayActivities = recentActivities.filter((act) => {
+              if (!act.created_at) return false;
+              return new Date(act.created_at).toISOString().split('T')[0] === todayDateStr;
+            });
+
+            return (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: 'var(--radius-sm)',
+                      background: 'var(--color-primary-subtle)',
+                      color: 'var(--color-primary)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Clock size={16} />
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      {t('dashboard.recentActivity')}
+                    </span>
+                    <span
+                      style={{
+                        marginLeft: '0.5rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        padding: '0.15rem 0.5rem',
+                        borderRadius: 'var(--radius-full)',
+                        background: todayActivities.length > 0 ? 'var(--color-primary-subtle)' : 'var(--bg-hover)',
+                        color: todayActivities.length > 0 ? 'var(--color-primary)' : 'var(--text-muted)',
+                      }}
+                    >
+                      {todayActivities.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <button
+                    className="btn btn-sm btn-secondary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActivePage('activity');
+                    }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}
+                  >
+                    <span>{t('dashboard.viewAll')}</span>
+                    <ArrowRight size={13} />
+                  </button>
+
+                  <div style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}>
+                    {isActivityOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </div>
 
-        {recentActivities.length === 0 ? (
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{t('activity.empty')}</p>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-            {recentActivities.map((act) => (
-              <div
-                key={act.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '0.6rem 0.75rem',
-                  borderRadius: 'var(--radius-sm)',
-                  background: 'var(--bg-surface-elevated)',
-                  fontSize: '0.85rem',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                  <Clock size={15} style={{ color: 'var(--color-primary)' }} />
-                  <span style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{act.details}</span>
+        {/* Collapsible Dropdown Content */}
+        {isActivityOpen && (
+          <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid var(--border-subtle)', background: 'var(--bg-surface)' }}>
+            {(() => {
+              const todayDateStr = new Date().toISOString().split('T')[0];
+              const todayActivities = recentActivities.filter((act) => {
+                if (!act.created_at) return false;
+                return new Date(act.created_at).toISOString().split('T')[0] === todayDateStr;
+              });
+
+              if (todayActivities.length === 0) {
+                return (
+                  <div style={{ textAlign: 'center', padding: '1.5rem', color: 'var(--text-secondary)' }}>
+                    <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+                      {t('dashboard.noActivityToday')}
+                    </p>
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => setActivePage('activity')}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                    >
+                      <span>{t('dashboard.viewAll')}</span>
+                      <ArrowRight size={13} />
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                  {todayActivities.map((act) => {
+                    const custName = act.customer_name || 'Customer';
+                    const isPayment = act.action?.includes('PAYMENT');
+                    
+                    // Clean up trailing "for [Name]" or "from [Name]" if present in details
+                    let cleanDetails = act.details || '';
+                    if (act.customer_name) {
+                      cleanDetails = cleanDetails
+                        .replace(new RegExp(`\\s+(for|from)\\s+${act.customer_name}`, 'i'), '')
+                        .replace(new RegExp(`^Created customer:\\s*${act.customer_name}`, 'i'), t('activity.CREATE_CUSTOMER'));
+                    }
+
+                    // Format time if today
+                    let timeStr = '';
+                    try {
+                      if (act.created_at) {
+                        const d = new Date(act.created_at);
+                        timeStr = d.toLocaleTimeString(lang === 'am' ? 'am-ET' : 'en-US', {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        });
+                      }
+                    } catch {}
+
+                    return (
+                      <div
+                        key={act.id}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.65rem 0.85rem',
+                          borderRadius: 'var(--radius-sm)',
+                          background: 'var(--bg-surface-elevated)',
+                          fontSize: '0.85rem',
+                          flexWrap: 'wrap',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: '1 1 240px' }}>
+                          <div
+                            className="customer-avatar"
+                            style={{
+                              width: '30px',
+                              height: '30px',
+                              fontSize: '0.85rem',
+                              background: isPayment ? 'var(--color-primary-subtle)' : 'var(--color-warning-subtle)',
+                              color: isPayment ? 'var(--color-primary)' : 'var(--color-warning)',
+                              border: 'none',
+                              flexShrink: 0,
+                            }}
+                          >
+                            {custName.charAt(0).toUpperCase()}
+                          </div>
+
+                          <div>
+                            {act.customer_id ? (
+                              <button
+                                onClick={() => onSelectCustomer(act.customer_id)}
+                                style={{
+                                  fontWeight: 700,
+                                  color: 'var(--text-primary)',
+                                  cursor: 'pointer',
+                                  textAlign: 'left',
+                                  display: 'inline',
+                                  marginRight: '0.35rem',
+                                  fontSize: '0.88rem',
+                                  textDecoration: 'underline',
+                                }}
+                              >
+                                {custName}:
+                              </button>
+                            ) : (
+                              <strong style={{ color: 'var(--text-primary)', marginRight: '0.35rem' }}>
+                                {custName}:
+                              </strong>
+                            )}
+                            <span style={{ color: 'var(--text-secondary)' }}>
+                              {cleanDetails}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                          <Clock size={13} style={{ color: 'var(--color-primary)' }} />
+                          <span>{timeStr || formatDate(act.created_at)}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Show More link at the bottom of the dropdown list */}
+                  <div style={{ textAlign: 'center', paddingTop: '0.5rem', borderTop: '1px solid var(--border-subtle)', marginTop: '0.25rem' }}>
+                    <button
+                      className="btn btn-sm btn-secondary"
+                      onClick={() => setActivePage('activity')}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
+                    >
+                      <span>{t('dashboard.viewAll')}</span>
+                      <ArrowRight size={13} />
+                    </button>
+                  </div>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  {formatDate(act.created_at)}
-                </span>
-              </div>
-            ))}
+              );
+            })()}
           </div>
         )}
       </div>

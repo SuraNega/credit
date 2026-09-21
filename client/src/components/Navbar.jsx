@@ -32,7 +32,7 @@ export default function Navbar({ activePage, setActivePage }) {
         <div className="brand-icon-wrap">
           <CreditCard size={20} />
         </div>
-        <span>{t('app.title')}</span>
+        <span className="brand-text">{t('app.title')}</span>
       </div>
 
       <nav className="nav-links">

@@ -144,11 +144,18 @@ export default function CreditModal({
     try {
       let targetCustId = selectedCustomer?.id || customerId;
 
+      // Phone number is critical when creating a customer
+      if (!targetCustId && !phone.trim()) {
+        setError(t('common.required') + ': ' + t('credits.phone'));
+        setLoading(false);
+        return;
+      }
+
       // If new customer, auto-register them first!
       if (!targetCustId) {
         const createRes = await customersAPI.create({
           name: customerName.trim(),
-          phone: phone.trim() || null,
+          phone: phone.trim(),
           block: block.trim() || null,
           house_number: houseNumber.trim() || null,
           language: 'am',
@@ -333,13 +340,17 @@ export default function CreditModal({
             )}
           </div>
 
-          {/* Phone & Block/House (for quick customer details) */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr', gap: '0.65rem' }}>
+          {/* Phone (Critical) & Block/House (Optional) */}
+          <div className="form-grid-3">
             <div className="form-group">
-              <label className="form-label">{t('credits.phone')}</label>
+              <label className="form-label">
+                <span>{t('credits.phone')}</span>
+                <span style={{ color: 'var(--color-danger)', fontSize: '0.75rem' }}>*</span>
+              </label>
               <input
                 type="tel"
                 className="form-input"
+                required={!selectedCustomer}
                 placeholder={t('credits.phonePlaceholder')}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -370,7 +381,7 @@ export default function CreditModal({
           </div>
 
           {/* Item Taken & Amount */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '0.75rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">
                 <span>{t('credits.item')}</span>
