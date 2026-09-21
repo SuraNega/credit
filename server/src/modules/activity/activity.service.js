@@ -120,6 +120,8 @@ export async function getTopDebtors(limit = 10) {
        c.id,
        c.name,
        c.phone,
+       c.block,
+       c.house_number,
        c.status,
        COALESCE(cr.total_credit, 0) AS total_credit,
        COALESCE(pa.total_paid, 0) AS total_paid,
