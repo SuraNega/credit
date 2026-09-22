@@ -2,11 +2,22 @@
   "name": "dagi-credit-tracker",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "npm --prefix client run dev",
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
-    "build": "npm --prefix client run build",
-    "server": "npm --prefix server start"
+    "build": "npm --prefix client install && npm --prefix client run build",
+    "server": "npm --prefix server start",
+    "db:init:clean": "node server/src/db/migrate_clean.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1",
+    "zod": "^3.24.1"
   }
 }
