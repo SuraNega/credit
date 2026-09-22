@@ -9,8 +9,8 @@ import {
 } from '../utils/phone';
 
 /**
- * Custom Ethiopian Phone Number Input
- * Supports +251 country code prefix and live operator detection:
+ * Clean Ethiopian Phone Number Input
+ * Fixed +251 country code prefix and live operator detection:
  *  - Ethio Telecom (starts with 9)
  *  - Safaricom Ethiopia (starts with 7)
  */
@@ -71,13 +71,10 @@ export default function EthiopianPhoneInput({
 
   return (
     <div className="form-group" style={{ marginBottom: '0.95rem' }}>
-      <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.25rem' }}>
+      <label className="form-label">
         <span>
           {label || t('customers.phone')}
           {required && <span style={{ color: 'var(--color-danger)', marginLeft: '0.25rem' }}>*</span>}
-        </span>
-        <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 400 }}>
-          {t('customers.carrierHint')}
         </span>
       </label>
 
@@ -95,7 +92,7 @@ export default function EthiopianPhoneInput({
               : 'var(--border-subtle)'
           }`,
           borderRadius: 'var(--radius-md)',
-          padding: '2px 6px 2px 0',
+          padding: '2px 8px 2px 0',
           transition: 'all var(--transition-fast)',
           boxShadow: isValid ? '0 0 0 1px var(--color-primary-glow)' : 'none',
           width: '100%',
@@ -107,13 +104,13 @@ export default function EthiopianPhoneInput({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.25rem',
-            padding: '0.6rem 0.65rem',
+            gap: '0.35rem',
+            padding: '0.65rem 0.75rem',
             background: 'var(--bg-hover)',
             borderTopLeftRadius: 'calc(var(--radius-md) - 2px)',
             borderBottomLeftRadius: 'calc(var(--radius-md) - 2px)',
             borderRight: '1px solid var(--border-subtle)',
-            fontSize: '0.85rem',
+            fontSize: '0.9rem',
             fontWeight: 700,
             color: 'var(--text-primary)',
             userSelect: 'none',
@@ -121,7 +118,7 @@ export default function EthiopianPhoneInput({
           }}
           title="Ethiopia (+251)"
         >
-          <span style={{ fontSize: '1rem', lineHeight: 1 }}>🇪🇹</span>
+          <span style={{ fontSize: '1.05rem', lineHeight: 1 }}>🇪🇹</span>
           <span>+251</span>
         </div>
 
@@ -135,25 +132,24 @@ export default function EthiopianPhoneInput({
           value={digits}
           onChange={handleInputChange}
           onBlur={handleBlur}
-          placeholder={t('customers.phonePlaceholder')}
+          placeholder="911223344"
           style={{
             flex: 1,
             minWidth: 0,
             background: 'transparent',
             border: 'none',
             outline: 'none',
-            padding: '0.6rem 0.65rem',
+            padding: '0.65rem 0.75rem',
             fontSize: '1rem',
             fontWeight: 600,
-            letterSpacing: '0.03em',
+            letterSpacing: '0.04em',
             color: 'var(--text-primary)',
-            fontFamily: 'monospace, var(--sans)',
             width: '100%',
           }}
         />
 
         {/* Right Status / Carrier Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
           {carrier === 'ethio_telecom' && (
             <span
               style={{
@@ -197,37 +193,28 @@ export default function EthiopianPhoneInput({
           )}
 
           {isValid && (
-            <CheckCircle2 size={16} style={{ color: '#10b981', flexShrink: 0 }} />
+            <CheckCircle2 size={17} style={{ color: '#10b981', flexShrink: 0 }} />
           )}
         </div>
       </div>
 
-      {/* Helper text & Live Error Feedback */}
-      <div style={{ marginTop: '0.3rem', minHeight: '1rem' }}>
-        {inlineError ? (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.3rem',
-              color: 'var(--color-danger)',
-              fontSize: '0.78rem',
-              fontWeight: 500,
-            }}
-          >
-            <AlertCircle size={13} style={{ flexShrink: 0 }} />
-            <span>{inlineError}</span>
-          </div>
-        ) : digits.length > 0 && !isValid ? (
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            {t('customers.phonePrefix')} {digits} • {digits.length}/9 digits
-          </div>
-        ) : isValid ? (
-          <div style={{ fontSize: '0.75rem', color: 'var(--color-primary)', fontWeight: 500 }}>
-            ✓ {t('customers.phonePrefix')} {digits.slice(0, 3)} {digits.slice(3, 6)} {digits.slice(6, 9)} ({carrier === 'ethio_telecom' ? t('customers.ethioTelecom') : t('customers.safaricom')})
-          </div>
-        ) : null}
-      </div>
+      {/* Helper / Error Feedback */}
+      {inlineError && (
+        <div
+          style={{
+            marginTop: '0.3rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.3rem',
+            color: 'var(--color-danger)',
+            fontSize: '0.78rem',
+            fontWeight: 500,
+          }}
+        >
+          <AlertCircle size={13} style={{ flexShrink: 0 }} />
+          <span>{inlineError}</span>
+        </div>
+      )}
     </div>
   );
 }

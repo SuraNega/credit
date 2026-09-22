@@ -422,7 +422,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 0.65rem;
+  padding: 0.5rem;
   animation: fadeIn 200ms ease;
   box-sizing: border-box;
 }
@@ -439,8 +439,8 @@
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 520px;
-  max-height: calc(100vh - 1.5rem);
-  max-height: calc(100dvh - 1.5rem);
+  max-height: calc(100vh - 1rem);
+  max-height: calc(100dvh - 1rem);
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-lg);
@@ -448,28 +448,44 @@
   overflow: hidden;
   margin: auto;
   box-sizing: border-box;
+  position: relative;
 }
 
 @media (min-width: 640px) {
   .modal-content {
     border-radius: var(--radius-xl);
-    max-height: calc(100dvh - 3rem);
+    max-height: calc(100dvh - 2.5rem);
   }
 }
 
+/* Critical fix: allow form inside modal to properly flex & constrain body height */
+.modal-content > form,
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
 .modal-header {
-  padding: 0.9rem 1rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
   flex-shrink: 0;
+  background: var(--bg-surface);
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 480px) {
   .modal-header {
-    padding: 1.15rem 1.35rem;
+    padding: 1.1rem 1.35rem;
   }
 }
 
@@ -504,8 +520,10 @@
   padding: 1rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  flex: 1;
+  flex: 1 1 auto;
+  min-height: 0;
   box-sizing: border-box;
+  overscroll-behavior: contain;
 }
 
 @media (min-width: 480px) {
@@ -530,6 +548,8 @@
   background: var(--bg-surface-elevated);
   flex-shrink: 0;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
 }
 
 @media (min-width: 480px) {
