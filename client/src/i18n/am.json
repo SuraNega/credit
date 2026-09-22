@@ -44,7 +44,9 @@
     "debt": "ቀሪ እዳ",
     "itemsTaken": "የወሰዷቸው ዕቃዎች",
     "pay": "ክፈል",
-    "addMoreCredit": "+ ብድር"
+    "addMoreCredit": "+ ብድር",
+    "topDebtors": "የባለዕዳ ደንበኞች ዝርዝር",
+    "topDebtorsSubtitle": "ያልተከፈለ ቀሪ እዳ ያለባቸው ደንበኞች"
   },
   "customers": {
     "title": "የደንበኞች ማውጫ",
@@ -57,6 +59,14 @@
     "totalCount": "ደንበኞች ተገኝተዋል",
     "name": "የደንበኛ ስም",
     "phone": "ስልክ ቁጥር",
+    "phonePlaceholder": "9XX XXX XXX ወይም 7XX XXX XXX",
+    "phonePrefix": "+251",
+    "ethioTelecom": "ኢትዮ ቴሌኮም",
+    "safaricom": "ሳፋሪኮም",
+    "carrierHint": "በ 9 (ኢትዮ ቴሌኮም) ወይም 7 (ሳፋሪኮም) ይጀምሩ",
+    "phoneInvalidCarrier": "በ 9 (ኢትዮ ቴሌኮም) ወይም 7 (ሳፋሪኮም) መጀመር አለበት",
+    "phoneIncomplete": "ከ +251 በኋላ ያሉትን 9 ዲጂቶች ሙሉ ያስገቡ",
+    "phoneValid": "ትክክለኛ ስልክ ቁጥር",
     "block": "መንደር / ብሎክ",
     "houseNumber": "የቤት ቁጥር",
     "balance": "ቀሪ እዳ",

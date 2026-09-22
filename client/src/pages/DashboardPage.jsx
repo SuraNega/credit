@@ -5,6 +5,7 @@ import { dashboardAPI, customersAPI, activityAPI } from '../api/client';
 import StatCard from '../components/StatCard';
 import CreditModal from '../components/CreditModal';
 import PaymentModal from '../components/PaymentModal';
+import { formatEthiopianPhone } from '../utils/phone';
 import {
   Wallet,
   Users,
@@ -71,11 +72,18 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
       if (!q) {
         setFilteredDebtors(debtors);
       } else {
+        const qDigits = q.replace(/[\s\-\(\)\.]/g, '');
+        let qNational = qDigits;
+        if (qNational.startsWith('+251')) qNational = qNational.slice(4);
+        else if (qNational.startsWith('251')) qNational = qNational.slice(3);
+        else if (qNational.startsWith('0')) qNational = qNational.slice(1);
+
         setFilteredDebtors(
           debtors.filter(
             (d) =>
               d.name?.toLowerCase().includes(q) ||
               d.phone?.includes(q) ||
+              (qNational && d.phone && d.phone.replace(/[\s\-\(\)\.]/g, '').includes(qNational)) ||
               d.block?.toLowerCase().includes(q) ||
               d.house_number?.toLowerCase().includes(q)
           )
@@ -185,10 +193,55 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
             marginBottom: '1.25rem',
           }}
         >
-          <div>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              {t('dashboard.topDebtors')} ({debtors.length})
-            </h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+            <div
+              style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: 'var(--radius-md)',
+                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15))',
+                border: '1px solid rgba(239, 68, 68, 0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--color-danger)',
+                flexShrink: 0,
+              }}
+            >
+              <Users size={20} />
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+                <h2
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.02em',
+                    lineHeight: 1.2,
+                    margin: 0,
+                  }}
+                >
+                  {t('dashboard.topDebtors')}
+                </h2>
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    padding: '0.15rem 0.6rem',
+                    borderRadius: '999px',
+                    background: 'var(--color-danger-subtle)',
+                    color: 'var(--color-danger)',
+                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                  }}
+                >
+                  {debtors.length}
+                </span>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+                {t('dashboard.topDebtorsSubtitle')}
+              </p>
+            </div>
           </div>
 
           {/* Quick Search inside Ledger */}
@@ -254,7 +307,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                         {debtor.phone && (
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                             <Phone size={12} />
-                            <span>{debtor.phone}</span>
+                            <span>{formatEthiopianPhone(debtor.phone)}</span>
                           </span>
                         )}
 

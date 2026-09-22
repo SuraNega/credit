@@ -66,6 +66,7 @@ export const customersAPI = {
     return request(`/customers${qs ? `?${qs}` : ''}`);
   },
   getById: (id) => request(`/customers/${id}`),
+  get: (id) => request(`/customers/${id}`),
   create: (data) =>
     request('/customers', {
       method: 'POST',

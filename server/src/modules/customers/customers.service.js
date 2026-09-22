@@ -17,9 +17,23 @@ export async function listCustomers({ search, status, page, limit }) {
   }
 
   if (search) {
-    conditions.push(`(c.name ILIKE $${paramIndex} OR c.phone ILIKE $${paramIndex})`);
-    values.push(`%${search}%`);
-    paramIndex++;
+    const rawSearch = search.trim();
+    const digitOnly = rawSearch.replace(/[\s\-\(\)\.]/g, '');
+    let strippedPhone = digitOnly;
+    if (strippedPhone.startsWith('+251')) strippedPhone = strippedPhone.slice(4);
+    else if (strippedPhone.startsWith('251')) strippedPhone = strippedPhone.slice(3);
+    else if (strippedPhone.startsWith('0')) strippedPhone = strippedPhone.slice(1);
+
+    if (strippedPhone.length > 0 && /^\d+$/.test(strippedPhone)) {
+      conditions.push(`(c.name ILIKE $${paramIndex} OR c.phone ILIKE $${paramIndex} OR c.phone ILIKE $${paramIndex + 1})`);
+      values.push(`%${rawSearch}%`);
+      values.push(`%${strippedPhone}%`);
+      paramIndex += 2;
+    } else {
+      conditions.push(`(c.name ILIKE $${paramIndex} OR c.phone ILIKE $${paramIndex})`);
+      values.push(`%${rawSearch}%`);
+      paramIndex++;
+    }
   }
 
   const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';

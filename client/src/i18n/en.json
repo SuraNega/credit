@@ -44,7 +44,9 @@
     "debt": "Debt",
     "itemsTaken": "Items Taken",
     "pay": "Pay",
-    "addMoreCredit": "+ Credit"
+    "addMoreCredit": "+ Credit",
+    "topDebtors": "Active Debtors List",
+    "topDebtorsSubtitle": "Customers with unsettled credit accounts"
   },
   "customers": {
     "title": "Customers Directory",
@@ -57,6 +59,14 @@
     "totalCount": "Customers found",
     "name": "Customer Name",
     "phone": "Phone Number",
+    "phonePlaceholder": "9XX XXX XXX or 7XX XXX XXX",
+    "phonePrefix": "+251",
+    "ethioTelecom": "Ethio Telecom",
+    "safaricom": "Safaricom",
+    "carrierHint": "9 for Ethio Telecom, 7 for Safaricom",
+    "phoneInvalidCarrier": "Must start with 9 (Ethio Telecom) or 7 (Safaricom)",
+    "phoneIncomplete": "Enter all 9 digits after +251",
+    "phoneValid": "Valid Ethiopian number",
     "block": "Block / Area",
     "houseNumber": "House Number",
     "balance": "Outstanding Debt",

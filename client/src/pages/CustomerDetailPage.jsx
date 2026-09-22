@@ -6,6 +6,7 @@ import CustomerModal from '../components/CustomerModal';
 import CreditModal from '../components/CreditModal';
 import PaymentModal from '../components/PaymentModal';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { formatEthiopianPhone, detectCarrier } from '../utils/phone';
 import {
   ArrowLeft,
   Phone,
@@ -186,19 +187,50 @@ export default function CustomerDetailPage({ customerId, onBack }) {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.35rem', flexWrap: 'wrap', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
                   {customer.phone && (
-                    <a
-                      href={`tel:${customer.phone}`}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                        color: 'var(--color-primary)',
-                        fontWeight: 500,
-                      }}
-                    >
-                      <Phone size={14} />
-                      <span>{customer.phone}</span>
-                    </a>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                      <a
+                        href={`tel:${customer.phone}`}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          color: 'var(--color-primary)',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <Phone size={14} />
+                        <span>{formatEthiopianPhone(customer.phone)}</span>
+                      </a>
+                      {detectCarrier(customer.phone) === 'ethio_telecom' && (
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            padding: '0.15rem 0.45rem',
+                            borderRadius: '999px',
+                            background: 'rgba(16, 185, 129, 0.15)',
+                            color: '#10b981',
+                          }}
+                        >
+                          {t('customers.ethioTelecom')}
+                        </span>
+                      )}
+                      {detectCarrier(customer.phone) === 'safaricom' && (
+                        <span
+                          style={{
+                            fontSize: '0.72rem',
+                            fontWeight: 600,
+                            padding: '0.15rem 0.45rem',
+                            borderRadius: '999px',
+                            background: 'rgba(14, 165, 233, 0.15)',
+                            color: '#0284c7',
+                          }}
+                        >
+                          {t('customers.safaricom')}
+                        </span>
+                      )}
+                    </div>
                   )}
 
                   {(customer.block || customer.house_number) && (

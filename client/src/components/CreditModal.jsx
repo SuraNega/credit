@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import Modal from './Modal';
 import { useLanguage } from '../context/LanguageContext';
 import { creditsAPI, customersAPI } from '../api/client';
-import { User, Phone, MapPin, Check, Sparkles, Clock, AlertCircle } from 'lucide-react';
+import { User, Check, Sparkles, AlertCircle } from 'lucide-react';
+import EthiopianPhoneInput from './EthiopianPhoneInput';
+import { isValidEthiopianPhone } from '../utils/phone';
 
 export default function CreditModal({
   isOpen,
@@ -26,28 +28,27 @@ export default function CreditModal({
   const [houseNumber, setHouseNumber] = useState('');
   const [item, setItem] = useState('');
   const [amount, setAmount] = useState('');
-  const [creditDate, setCreditDate] = useState(new Date().toISOString().split('T')[0]);
+  const [creditDate, setCreditDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [notes, setNotes] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // When modal opens or props change
+  // Reset form when opening or customerId/credit changes
   useEffect(() => {
     if (isOpen) {
       if (credit) {
+        setSelectedCustomer(null);
+        setCustomerName(credit.customer_name || '');
+        setPhone(credit.customer_phone || '');
+        setBlock('');
+        setHouseNumber('');
         setItem(credit.item || '');
-        setAmount(credit.amount || '');
-        setCreditDate(credit.credit_date ? credit.credit_date.split('T')[0] : '');
+        setAmount(credit.amount ? String(credit.amount) : '');
+        setCreditDate(credit.credit_date ? credit.credit_date.split('T')[0] : new Date().toISOString().split('T')[0]);
         setNotes(credit.notes || '');
-      } else {
-        setItem('');
-        setAmount('');
-        setCreditDate(new Date().toISOString().split('T')[0]);
-        setNotes('');
-      }
-
-      if (customerId) {
+      } else if (customerId) {
+        // Pre-loaded specific customer
         customersAPI
           .getById(customerId)
           .then((res) => {
@@ -58,13 +59,19 @@ export default function CreditModal({
             setBlock(c.block || '');
             setHouseNumber(c.house_number || '');
           })
-          .catch(() => {});
-      } else if (!credit) {
+          .catch((err) => {
+            console.error('Failed to load customer in CreditModal:', err);
+          });
+      } else {
         setSelectedCustomer(null);
         setCustomerName('');
         setPhone('');
         setBlock('');
         setHouseNumber('');
+        setItem('');
+        setAmount('');
+        setCreditDate(new Date().toISOString().split('T')[0]);
+        setNotes('');
       }
       setError('');
       setMatchingCustomers([]);
@@ -144,11 +151,18 @@ export default function CreditModal({
     try {
       let targetCustId = selectedCustomer?.id || customerId;
 
-      // Phone number is critical when creating a customer
-      if (!targetCustId && !phone.trim()) {
-        setError(t('common.required') + ': ' + t('credits.phone'));
-        setLoading(false);
-        return;
+      // Validate phone for new customer
+      if (!targetCustId) {
+        if (!phone.trim()) {
+          setError(t('common.required') + ': ' + t('credits.phone'));
+          setLoading(false);
+          return;
+        }
+        if (!isValidEthiopianPhone(phone)) {
+          setError(t('customers.phoneInvalidCarrier') + ' — ' + t('customers.phoneIncomplete'));
+          setLoading(false);
+          return;
+        }
       }
 
       // If new customer, auto-register them first!
@@ -340,40 +354,34 @@ export default function CreditModal({
             )}
           </div>
 
-          {/* Phone (Critical) & Block/House (Optional) */}
-          <div className="form-grid-3">
-            <div className="form-group">
-              <label className="form-label">
-                <span>{t('credits.phone')}</span>
-                <span style={{ color: 'var(--color-danger)', fontSize: '0.75rem' }}>*</span>
-              </label>
-              <input
-                type="tel"
-                className="form-input"
-                required={!selectedCustomer}
-                placeholder={t('credits.phonePlaceholder')}
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
+          {/* Phone (Ethiopian Operator Verified: Ethio Telecom / Safaricom) */}
+          <EthiopianPhoneInput
+            value={phone}
+            required={!selectedCustomer}
+            disabled={Boolean(selectedCustomer)}
+            onChange={(normalized) => setPhone(normalized)}
+          />
 
-            <div className="form-group">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">{t('credits.block')}</label>
               <input
                 type="text"
                 className="form-input"
                 placeholder="Block A"
+                disabled={Boolean(selectedCustomer)}
                 value={block}
                 onChange={(e) => setBlock(e.target.value)}
               />
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">{t('credits.houseNumber')}</label>
               <input
                 type="text"
                 className="form-input"
                 placeholder="#12"
+                disabled={Boolean(selectedCustomer)}
                 value={houseNumber}
                 onChange={(e) => setHouseNumber(e.target.value)}
               />

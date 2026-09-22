@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { useLanguage } from '../context/LanguageContext';
 import { customersAPI } from '../api/client';
+import EthiopianPhoneInput from './EthiopianPhoneInput';
+import { isValidEthiopianPhone } from '../utils/phone';
 
 export default function CustomerModal({ isOpen, onClose, customer = null, onSaved }) {
   const { t } = useLanguage();
@@ -41,8 +43,13 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name.trim()) {
-      setError(t('common.required') + ': ' + t('customers.name'));
+    if (!formData.name.trim() || formData.name.trim().length < 2) {
+      setError(t('common.required') + ': ' + t('customers.name') + ' (min 2 characters)');
+      return;
+    }
+
+    if (!formData.phone || !isValidEthiopianPhone(formData.phone)) {
+      setError(t('customers.phoneInvalidCarrier') + ' — ' + t('customers.phoneIncomplete'));
       return;
     }
 
@@ -50,12 +57,21 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
     setError('');
 
     try {
+      const payload = {
+        name: formData.name.trim(),
+        phone: formData.phone.trim(),
+        block: formData.block.trim() || null,
+        house_number: formData.house_number.trim() || null,
+        language: formData.language || 'am',
+        notes: formData.notes.trim() || null,
+      };
+
       let saved;
       if (customer) {
-        const res = await customersAPI.update(customer.id, formData);
+        const res = await customersAPI.update(customer.id, payload);
         saved = res.data;
       } else {
-        const res = await customersAPI.create(formData);
+        const res = await customersAPI.create(payload);
         saved = res.data;
       }
       onSaved(saved);
@@ -105,16 +121,11 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">{t('customers.phone')}</label>
-            <input
-              type="tel"
-              className="form-input"
-              placeholder="0911223344"
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            />
-          </div>
+          <EthiopianPhoneInput
+            value={formData.phone}
+            required
+            onChange={(normalizedPhone) => setFormData({ ...formData, phone: normalizedPhone })}
+          />
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
             <div className="form-group">

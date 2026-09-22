@@ -5,6 +5,7 @@ import StatusBadge from '../components/StatusBadge';
 import CustomerModal from '../components/CustomerModal';
 import CreditModal from '../components/CreditModal';
 import PaymentModal from '../components/PaymentModal';
+import { formatEthiopianPhone } from '../utils/phone';
 import {
   Search,
   UserPlus,
@@ -194,7 +195,7 @@ export default function CustomersPage({ onSelectCustomer }) {
                           {c.phone ? (
                             <>
                               <Phone size={13} />
-                              <span>{c.phone}</span>
+                              <span>{formatEthiopianPhone(c.phone)}</span>
                             </>
                           ) : (
                             <span style={{ color: 'var(--text-muted)' }}>No phone</span>

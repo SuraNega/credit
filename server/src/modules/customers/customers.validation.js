@@ -1,21 +1,37 @@
 import { z } from 'zod';
+import { isValidEthiopianPhone, normalizeEthiopianPhone } from '../../utils/phone.js';
 
 export const createCustomerSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100),
-  phone: z.string().max(20).optional().nullable(),
-  block: z.string().max(50).optional().nullable(),
-  house_number: z.string().max(20).optional().nullable(),
+  name: z.string().trim().min(2, 'Name must be at least 2 characters').max(100),
+  phone: z
+    .string({ required_error: 'Phone number is required' })
+    .trim()
+    .min(1, 'Phone number is required')
+    .refine((val) => isValidEthiopianPhone(val), {
+      message: 'Invalid Ethiopian phone number. Must start with 9 (Ethio Telecom) or 7 (Safaricom) with 9 digits (e.g. +251 9... / 7...).',
+    })
+    .transform((val) => normalizeEthiopianPhone(val)),
+  block: z.string().trim().max(50).optional().nullable(),
+  house_number: z.string().trim().max(20).optional().nullable(),
   language: z.string().max(10).default('am'),
-  notes: z.string().optional().nullable(),
+  notes: z.string().trim().optional().nullable(),
 });
 
 export const updateCustomerSchema = z.object({
-  name: z.string().min(1).max(100).optional(),
-  phone: z.string().max(20).optional().nullable(),
-  block: z.string().max(50).optional().nullable(),
-  house_number: z.string().max(20).optional().nullable(),
+  name: z.string().trim().min(2).max(100).optional(),
+  phone: z
+    .string()
+    .trim()
+    .optional()
+    .nullable()
+    .refine((val) => !val || isValidEthiopianPhone(val), {
+      message: 'Invalid Ethiopian phone number. Must start with 9 (Ethio Telecom) or 7 (Safaricom) with 9 digits.',
+    })
+    .transform((val) => (val ? normalizeEthiopianPhone(val) : null)),
+  block: z.string().trim().max(50).optional().nullable(),
+  house_number: z.string().trim().max(20).optional().nullable(),
   language: z.string().max(10).optional(),
-  notes: z.string().optional().nullable(),
+  notes: z.string().trim().optional().nullable(),
 });
 
 export const updateStatusSchema = z.object({
