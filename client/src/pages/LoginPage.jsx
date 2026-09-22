@@ -39,43 +39,45 @@ export default function LoginPage() {
     <div
       style={{
         minHeight: '100vh',
+        minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '1.5rem',
+        padding: '1rem',
         background: 'radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15), transparent 70%), var(--bg-app)',
+        boxSizing: 'border-box',
       }}
     >
       {/* Top Bar with Language & Theme Switches */}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '460px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <div className="brand-icon-wrap" style={{ width: '34px', height: '34px' }}>
-            <CreditCard size={18} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+          <div className="brand-icon-wrap" style={{ width: '32px', height: '32px' }}>
+            <CreditCard size={17} />
           </div>
-          <span style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)' }}>
+          <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
             {t('app.title')}
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
           <button className="lang-toggle-btn" onClick={toggleLang}>
-            <Globe size={14} />
+            <Globe size={13} />
             <span>{lang === 'en' ? 'አማርኛ' : 'EN'}</span>
           </button>
-          <button className="btn-icon" onClick={toggleTheme}>
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          <button className="btn-icon" onClick={toggleTheme} style={{ minWidth: '32px', minHeight: '32px', padding: '0.35rem' }}>
+            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
           </button>
         </div>
       </header>
 
       {/* Center Card */}
-      <div style={{ width: '100%', maxWidth: '440px', margin: '2rem auto' }}>
-        <div className="card card-glass" style={{ padding: '2rem' }}>
-          <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
-            <h1 style={{ fontSize: '1.6rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
+      <div style={{ width: '100%', maxWidth: '440px', margin: '1.5rem auto' }}>
+        <div className="card card-glass" style={{ padding: '1.5rem 1.25rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+            <h1 style={{ fontSize: '1.45rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', margin: 0 }}>
               {t('auth.welcomeBack')}
             </h1>
-            <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.35rem' }}>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>
               {t('auth.loginSubtitle')}
             </p>
           </div>
@@ -83,12 +85,12 @@ export default function LoginPage() {
           {error && (
             <div
               style={{
-                padding: '0.85rem 1rem',
+                padding: '0.75rem 0.85rem',
                 borderRadius: 'var(--radius-md)',
                 background: 'var(--color-danger-subtle)',
                 color: 'var(--color-danger)',
-                fontSize: '0.875rem',
-                marginBottom: '1.25rem',
+                fontSize: '0.85rem',
+                marginBottom: '1rem',
                 border: '1px solid rgba(239, 68, 68, 0.2)',
               }}
             >
@@ -100,7 +102,7 @@ export default function LoginPage() {
             <div className="form-group">
               <label className="form-label">{t('auth.username')}</label>
               <div className="search-wrapper">
-                <User size={18} className="search-icon" />
+                <User size={17} className="search-icon" />
                 <input
                   type="text"
                   className="form-input search-input"
@@ -113,10 +115,10 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label className="form-label">{t('auth.password')}</label>
               <div className="search-wrapper">
-                <Lock size={18} className="search-icon" />
+                <Lock size={17} className="search-icon" />
                 <input
                   type="password"
                   className="form-input search-input"
@@ -133,29 +135,29 @@ export default function LoginPage() {
               type="submit"
               className="btn btn-primary"
               disabled={loading}
-              style={{ width: '100%', padding: '0.75rem', fontSize: '1rem', fontWeight: 600 }}
+              style={{ width: '100%', padding: '0.7rem', fontSize: '0.95rem', fontWeight: 600 }}
             >
               {loading ? t('auth.loggingIn') : t('auth.loginBtn')}
             </button>
           </form>
 
           {/* Quick Demo Credentials Autofill */}
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.25rem', borderTop: '1px solid var(--border-subtle)', textAlign: 'center' }}>
+          <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)', textAlign: 'center' }}>
             <button
               type="button"
               className="btn btn-secondary btn-sm"
               onClick={handleFillDemo}
-              style={{ width: '100%', fontSize: '0.8125rem' }}
+              style={{ width: '100%', fontSize: '0.8rem' }}
             >
               <Sparkles size={14} style={{ color: 'var(--color-warning)' }} />
-              {t('auth.demoCredentials')}
+              <span>{t('auth.demoCredentials')}</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Footer */}
-      <footer style={{ textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+      <footer style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-muted)' }}>
         © {new Date().getFullYear()} {t('app.title')} — {t('app.subtitle')}
       </footer>
     </div>

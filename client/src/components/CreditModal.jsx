@@ -48,7 +48,6 @@ export default function CreditModal({
         setCreditDate(credit.credit_date ? credit.credit_date.split('T')[0] : new Date().toISOString().split('T')[0]);
         setNotes(credit.notes || '');
       } else if (customerId) {
-        // Pre-loaded specific customer
         customersAPI
           .getById(customerId)
           .then((res) => {
@@ -125,7 +124,7 @@ export default function CreditModal({
   const handleNameChange = (val) => {
     setCustomerName(val);
     if (selectedCustomer && selectedCustomer.name !== val) {
-      setSelectedCustomer(null); // Back to new customer mode
+      setSelectedCustomer(null);
     }
   };
 
@@ -151,7 +150,6 @@ export default function CreditModal({
     try {
       let targetCustId = selectedCustomer?.id || customerId;
 
-      // Validate phone for new customer
       if (!targetCustId) {
         if (!phone.trim()) {
           setError(t('common.required') + ': ' + t('credits.phone'));
@@ -165,7 +163,6 @@ export default function CreditModal({
         }
       }
 
-      // If new customer, auto-register them first!
       if (!targetCustId) {
         const createRes = await customersAPI.create({
           name: customerName.trim(),
@@ -322,6 +319,8 @@ export default function CreditModal({
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '0.35rem',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -348,13 +347,13 @@ export default function CreditModal({
                   gap: '0.35rem',
                 }}
               >
-                <Sparkles size={13} style={{ color: 'var(--color-accent)' }} />
+                <Sparkles size={13} style={{ color: 'var(--color-warning)' }} />
                 <span>{t('credits.newCustomer')}</span>
               </div>
             )}
           </div>
 
-          {/* Phone (Ethiopian Operator Verified: Ethio Telecom / Safaricom) */}
+          {/* Phone Input */}
           <EthiopianPhoneInput
             value={phone}
             required={!selectedCustomer}
@@ -362,7 +361,7 @@ export default function CreditModal({
             onChange={(normalized) => setPhone(normalized)}
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div className="form-grid-2" style={{ marginBottom: '0.95rem' }}>
             <div className="form-group" style={{ marginBottom: 0 }}>
               <label className="form-label">{t('credits.block')}</label>
               <input
@@ -449,10 +448,10 @@ export default function CreditModal({
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading}>
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading} style={{ flex: '1 1 auto' }}>
             {t('common.cancel')}
           </button>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: '1 1 auto' }}>
             {loading ? t('common.saving') : t('credits.recordCredit')}
           </button>
         </div>

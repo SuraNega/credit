@@ -30,7 +30,6 @@ export default function ActivityPage({ onSelectCustomer }) {
   const fetchActivities = async () => {
     try {
       setLoading(true);
-      // Fetch up to 100 recent activities
       const res = await activityAPI.list({ limit: 100 });
       setActivities(res.data.activities || []);
     } catch (err) {
@@ -109,7 +108,6 @@ export default function ActivityPage({ onSelectCustomer }) {
     return formatDate(dateStr);
   };
 
-  // Helper to format time (e.g. 3:45 PM)
   const formatTime = (dateStr) => {
     if (!dateStr) return '';
     try {
@@ -162,7 +160,7 @@ export default function ActivityPage({ onSelectCustomer }) {
   return (
     <div className="activity-page">
       {/* Header */}
-      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
+      <div className="page-header">
         <div>
           <h1 className="page-title">{t('activity.title')}</h1>
           <p className="page-subtitle">{t('activity.subtitle')}</p>
@@ -173,17 +171,17 @@ export default function ActivityPage({ onSelectCustomer }) {
       <div
         className="card"
         style={{
-          padding: '1rem 1.25rem',
-          marginBottom: '1.5rem',
+          padding: '0.85rem 1rem',
+          marginBottom: '1.25rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.85rem',
+          gap: '0.75rem',
         }}
       >
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center' }}>
           {/* Live Search Input */}
-          <div className="search-wrapper" style={{ flex: '1 1 260px' }}>
-            <Search size={18} className="search-icon" />
+          <div className="search-wrapper" style={{ flex: '1 1 220px' }}>
+            <Search size={17} className="search-icon" />
             <input
               type="text"
               className="form-input search-input"
@@ -194,12 +192,12 @@ export default function ActivityPage({ onSelectCustomer }) {
           </div>
 
           {/* Calendar Date Picker Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <input
                 type="date"
                 className="form-input"
-                style={{ padding: '0.55rem 0.85rem', fontSize: '0.875rem', width: 'auto' }}
+                style={{ padding: '0.45rem 0.75rem', fontSize: '0.85rem', width: 'auto', minHeight: '36px' }}
                 value={selectedCalendarDate}
                 onChange={(e) => setSelectedCalendarDate(e.target.value)}
                 title={t('common.filterByDate')}
@@ -209,15 +207,15 @@ export default function ActivityPage({ onSelectCustomer }) {
                   className="btn-icon btn-sm"
                   onClick={() => setSelectedCalendarDate('')}
                   title="Clear Date"
-                  style={{ marginLeft: '0.25rem' }}
+                  style={{ marginLeft: '0.2rem' }}
                 >
-                  <X size={15} />
+                  <X size={14} />
                 </button>
               )}
             </div>
 
-            {/* Quick Date Pills: All, Today, Yesterday */}
-            <div style={{ display: 'flex', gap: '0.35rem' }}>
+            {/* Quick Date Pills */}
+            <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap' }}>
               <button
                 className={`btn btn-sm ${!selectedCalendarDate ? 'btn-primary' : 'btn-secondary'}`}
                 onClick={() => setSelectedCalendarDate('')}
@@ -243,20 +241,20 @@ export default function ActivityPage({ onSelectCustomer }) {
 
       {/* Activities Grouped by Date */}
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
           {t('common.loading')}
         </div>
       ) : dateKeys.length === 0 ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-          <History size={40} style={{ margin: '0 auto 1rem', opacity: 0.6, color: 'var(--text-muted)' }} />
-          <p style={{ fontWeight: 500 }}>
+        <div className="card" style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+          <History size={36} style={{ margin: '0 auto 0.75rem', opacity: 0.6, color: 'var(--text-muted)' }} />
+          <p style={{ fontWeight: 500, fontSize: '0.9rem' }}>
             {searchTerm || selectedCalendarDate
               ? t('common.noActivityForDate')
               : t('activity.empty')}
           </p>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
           {dateKeys.map((dateKey) => {
             const dateActivities = groupedByDate[dateKey];
             const headerLabel = getDateHeaderLabel(dateKey);
@@ -268,25 +266,25 @@ export default function ActivityPage({ onSelectCustomer }) {
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.4rem 0.9rem',
+                    gap: '0.45rem',
+                    padding: '0.35rem 0.75rem',
                     borderRadius: 'var(--radius-full)',
                     background: 'var(--bg-surface-elevated)',
                     border: '1px solid var(--border-subtle)',
-                    fontSize: '0.85rem',
+                    fontSize: '0.8rem',
                     fontWeight: 700,
                     color: 'var(--text-primary)',
-                    marginBottom: '0.75rem',
+                    marginBottom: '0.65rem',
                   }}
                 >
-                  <Calendar size={15} style={{ color: 'var(--color-primary)' }} />
+                  <Calendar size={14} style={{ color: 'var(--color-primary)' }} />
                   <span>{headerLabel}</span>
                   <span
                     style={{
-                      fontSize: '0.75rem',
+                      fontSize: '0.72rem',
                       fontWeight: 600,
                       color: 'var(--text-muted)',
-                      marginLeft: '0.25rem',
+                      marginLeft: '0.2rem',
                     }}
                   >
                     ({dateActivities.length})
@@ -294,7 +292,7 @@ export default function ActivityPage({ onSelectCustomer }) {
                 </div>
 
                 {/* Customer-Centric Activity Cards */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
                   {dateActivities.map((act) => {
                     const badgeConfig = getActionBadge(act.action);
                     const ActionIcon = badgeConfig.icon;
@@ -309,24 +307,24 @@ export default function ActivityPage({ onSelectCustomer }) {
                         key={act.id}
                         className="card card-hover"
                         style={{
-                          padding: '0.9rem 1.15rem',
+                          padding: '0.8rem 1rem',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           flexWrap: 'wrap',
-                          gap: '1rem',
+                          gap: '0.65rem',
                           background: 'var(--bg-surface)',
                           transition: 'border-color var(--transition-fast)',
                         }}
                       >
                         {/* Left: Customer Profile Avatar & Details */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: '1 1 280px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: '1 1 240px', minWidth: 0 }}>
                           <div
                             className="customer-avatar"
                             style={{
-                              width: '42px',
-                              height: '42px',
-                              fontSize: '1.1rem',
+                              width: '38px',
+                              height: '38px',
+                              fontSize: '1rem',
                               background: badgeConfig.bg,
                               color: badgeConfig.color,
                               border: 'none',
@@ -335,14 +333,14 @@ export default function ActivityPage({ onSelectCustomer }) {
                             {customerInitial}
                           </div>
 
-                          <div>
+                          <div style={{ minWidth: 0 }}>
                             {/* Customer Name & Action Pill */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
                               {act.customer_id ? (
                                 <button
                                   onClick={() => onSelectCustomer(act.customer_id)}
                                   style={{
-                                    fontSize: '1rem',
+                                    fontSize: '0.95rem',
                                     fontWeight: 700,
                                     color: 'var(--text-primary)',
                                     textAlign: 'left',
@@ -357,7 +355,7 @@ export default function ActivityPage({ onSelectCustomer }) {
                                   <ArrowRight size={13} style={{ color: 'var(--color-primary)', opacity: 0.8 }} />
                                 </button>
                               ) : (
-                                <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                                <span style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)' }}>
                                   {customerName}
                                 </span>
                               )}
@@ -367,21 +365,21 @@ export default function ActivityPage({ onSelectCustomer }) {
                                   display: 'inline-flex',
                                   alignItems: 'center',
                                   gap: '0.25rem',
-                                  padding: '0.15rem 0.5rem',
+                                  padding: '0.12rem 0.45rem',
                                   borderRadius: 'var(--radius-sm)',
                                   background: badgeConfig.bg,
                                   color: badgeConfig.color,
-                                  fontSize: '0.72rem',
+                                  fontSize: '0.7rem',
                                   fontWeight: 700,
                                 }}
                               >
-                                <ActionIcon size={12} />
+                                <ActionIcon size={11} />
                                 <span>{actionLabel}</span>
                               </span>
                             </div>
 
-                            {/* Customer Phone / Block & Description */}
-                            <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
+                            {/* Customer Description */}
+                            <div style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '0.15rem' }}>
                               {act.details}
                             </div>
 
@@ -390,22 +388,22 @@ export default function ActivityPage({ onSelectCustomer }) {
                                 style={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  gap: '0.75rem',
-                                  fontSize: '0.78rem',
+                                  gap: '0.65rem',
+                                  fontSize: '0.76rem',
                                   color: 'var(--text-muted)',
-                                  marginTop: '0.25rem',
+                                  marginTop: '0.2rem',
                                   flexWrap: 'wrap',
                                 }}
                               >
                                 {act.customer_phone && (
-                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <Phone size={12} />
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                                    <Phone size={11} />
                                     <span>{act.customer_phone}</span>
                                   </span>
                                 )}
                                 {(act.customer_block || act.customer_house_number) && (
-                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    <MapPin size={12} />
+                                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
+                                    <MapPin size={11} />
                                     <span>
                                       {act.customer_block ? act.customer_block : ''}
                                       {act.customer_block && act.customer_house_number ? ' #' : ''}
@@ -419,22 +417,22 @@ export default function ActivityPage({ onSelectCustomer }) {
                         </div>
 
                         {/* Right: Timestamp and Recorded By User */}
-                        <div style={{ textAlign: 'right', minWidth: '110px' }}>
+                        <div style={{ textAlign: 'right', minWidth: '95px' }}>
                           <div
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
-                              gap: '0.3rem',
-                              fontSize: '0.85rem',
+                              gap: '0.25rem',
+                              fontSize: '0.8rem',
                               fontWeight: 600,
                               color: 'var(--text-primary)',
                             }}
                           >
-                            <Clock size={13} style={{ color: 'var(--color-primary)' }} />
+                            <Clock size={12} style={{ color: 'var(--color-primary)' }} />
                             <span>{timeLabel || formatDate(act.created_at)}</span>
                           </div>
 
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+                          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
                             {act.user_name || 'Admin'}
                           </div>
                         </div>

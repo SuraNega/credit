@@ -129,7 +129,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
 
   if (loading && !customer) {
     return (
-      <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+      <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
         {t('common.loading')}
       </div>
     );
@@ -137,7 +137,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
 
   if (!customer) {
     return (
-      <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
+      <div className="card" style={{ padding: '2rem 1rem', textAlign: 'center' }}>
         <p>{t('customers.noCustomersFound')}</p>
         <button className="btn btn-secondary" onClick={onBack} style={{ marginTop: '1rem' }}>
           {t('customerDetail.back')}
@@ -154,7 +154,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
   return (
     <div className="customer-detail-page">
       {/* Back Button */}
-      <div style={{ marginBottom: '1.25rem' }}>
+      <div style={{ marginBottom: '1rem' }}>
         <button
           className="btn btn-sm btn-secondary"
           onClick={onBack}
@@ -166,48 +166,48 @@ export default function CustomerDetailPage({ customerId, onBack }) {
       </div>
 
       {/* Customer Profile Header Card */}
-      <div className="card" style={{ marginBottom: '1.5rem', padding: '1.75rem' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      <div className="card" style={{ marginBottom: '1.25rem', padding: '1.25rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.85rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: '1 1 240px', minWidth: 0 }}>
               <div
                 className="customer-avatar"
-                style={{ width: '56px', height: '56px', fontSize: '1.4rem' }}
+                style={{ width: '48px', height: '48px', fontSize: '1.25rem' }}
               >
                 {customer.name.charAt(0).toUpperCase()}
               </div>
 
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
-                  <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <h1 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, wordBreak: 'break-word' }}>
                     {customer.name}
                   </h1>
                   <StatusBadge status={customer.status} type="customer" />
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.35rem', flexWrap: 'wrap', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginTop: '0.25rem', flexWrap: 'wrap', color: 'var(--text-secondary)', fontSize: '0.82rem' }}>
                   {customer.phone && (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
                       <a
                         href={`tel:${customer.phone}`}
                         style={{
                           display: 'inline-flex',
                           alignItems: 'center',
-                          gap: '0.35rem',
+                          gap: '0.3rem',
                           color: 'var(--color-primary)',
                           fontWeight: 600,
                           textDecoration: 'none',
                         }}
                       >
-                        <Phone size={14} />
+                        <Phone size={13} />
                         <span>{formatEthiopianPhone(customer.phone)}</span>
                       </a>
                       {detectCarrier(customer.phone) === 'ethio_telecom' && (
                         <span
                           style={{
-                            fontSize: '0.72rem',
+                            fontSize: '0.7rem',
                             fontWeight: 600,
-                            padding: '0.15rem 0.45rem',
+                            padding: '0.1rem 0.4rem',
                             borderRadius: '999px',
                             background: 'rgba(16, 185, 129, 0.15)',
                             color: '#10b981',
@@ -219,9 +219,9 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                       {detectCarrier(customer.phone) === 'safaricom' && (
                         <span
                           style={{
-                            fontSize: '0.72rem',
+                            fontSize: '0.7rem',
                             fontWeight: 600,
-                            padding: '0.15rem 0.45rem',
+                            padding: '0.1rem 0.4rem',
                             borderRadius: '999px',
                             background: 'rgba(14, 165, 233, 0.15)',
                             color: '#0284c7',
@@ -234,8 +234,8 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                   )}
 
                   {(customer.block || customer.house_number) && (
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <MapPin size={14} />
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                      <MapPin size={13} />
                       <span>
                         {customer.block ? `${customer.block}` : ''}
                         {customer.block && customer.house_number ? ', ' : ''}
@@ -248,13 +248,13 @@ export default function CustomerDetailPage({ customerId, onBack }) {
             </div>
 
             {/* Header Action Buttons */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
               <button
                 className="btn btn-sm btn-secondary"
                 onClick={() => setIsEditModalOpen(true)}
                 title={t('customers.edit')}
               >
-                <Edit2 size={15} />
+                <Edit2 size={14} />
                 <span>{t('customers.edit')}</span>
               </button>
 
@@ -263,7 +263,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                 onClick={() => setConfirmToggleBlacklist(true)}
                 title={isBlacklisted ? t('customers.activate') : t('customers.blacklist')}
               >
-                {isBlacklisted ? <CheckCircle2 size={15} /> : <Ban size={15} />}
+                {isBlacklisted ? <CheckCircle2 size={14} /> : <Ban size={14} />}
                 <span>{isBlacklisted ? t('customers.activate') : t('customers.blacklist')}</span>
               </button>
 
@@ -273,7 +273,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                 title={t('customers.delete')}
                 style={{ color: 'var(--color-danger)' }}
               >
-                <Trash2 size={17} />
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
@@ -282,11 +282,11 @@ export default function CustomerDetailPage({ customerId, onBack }) {
           {isBlacklisted && customer.blacklist_reason && (
             <div
               style={{
-                padding: '0.75rem 1rem',
+                padding: '0.65rem 0.85rem',
                 borderRadius: 'var(--radius-md)',
                 background: 'var(--color-danger-subtle)',
                 color: 'var(--color-danger)',
-                fontSize: '0.85rem',
+                fontSize: '0.82rem',
               }}
             >
               <strong>{t('customers.blacklistReason')}:</strong> {customer.blacklist_reason}
@@ -296,11 +296,11 @@ export default function CustomerDetailPage({ customerId, onBack }) {
           {customer.notes && (
             <div
               style={{
-                fontSize: '0.85rem',
+                fontSize: '0.82rem',
                 color: 'var(--text-secondary)',
                 fontStyle: 'italic',
                 background: 'var(--bg-surface-elevated)',
-                padding: '0.65rem 0.85rem',
+                padding: '0.6rem 0.75rem',
                 borderRadius: 'var(--radius-md)',
               }}
             >
@@ -312,22 +312,24 @@ export default function CustomerDetailPage({ customerId, onBack }) {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-              gap: '1rem',
-              paddingTop: '1rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+              gap: '0.75rem',
+              paddingTop: '0.85rem',
               borderTop: '1px solid var(--border-subtle)',
+              alignItems: 'center',
             }}
           >
             <div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                 {t('customerDetail.balanceDue')}
               </div>
               <div
                 style={{
-                  fontSize: '1.5rem',
+                  fontSize: '1.35rem',
                   fontWeight: 800,
-                  marginTop: '0.2rem',
+                  marginTop: '0.15rem',
                   color: balance > 0 ? 'var(--color-danger)' : 'var(--color-primary)',
+                  lineHeight: 1.1,
                 }}
               >
                 {formatCurrency(balance)}
@@ -335,25 +337,25 @@ export default function CustomerDetailPage({ customerId, onBack }) {
             </div>
 
             <div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                 {t('customerDetail.totalCredits')}
               </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.2rem', color: 'var(--text-primary)' }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, marginTop: '0.15rem', color: 'var(--text-primary)', lineHeight: 1.1 }}>
                 {formatCurrency(totalCreditSum)}
               </div>
             </div>
 
             <div>
-              <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                 {t('customerDetail.totalPayments')}
               </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 600, marginTop: '0.2rem', color: 'var(--color-primary)' }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, marginTop: '0.15rem', color: 'var(--color-primary)', lineHeight: 1.1 }}>
                 {formatCurrency(totalPaidSum)}
               </div>
             </div>
 
-            {/* Quick action buttons right next to the balance */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', alignSelf: 'center' }}>
+            {/* Quick action buttons next to the balance */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap', gridColumn: 'auto' }}>
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => {
@@ -361,17 +363,18 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                   setIsCreditModalOpen(true);
                 }}
                 disabled={isBlacklisted}
+                style={{ flex: '1 1 auto' }}
               >
-                <PlusCircle size={15} />
+                <PlusCircle size={14} />
                 <span>{t('customerDetail.addCreditBtn')}</span>
               </button>
 
               <button
                 className="btn btn-sm"
-                style={{ background: 'var(--color-info)', color: '#fff' }}
+                style={{ background: 'var(--color-info)', color: '#fff', flex: '1 1 auto' }}
                 onClick={() => setIsPaymentModalOpen(true)}
               >
-                <Receipt size={15} />
+                <Receipt size={14} />
                 <span>{t('customerDetail.addPaymentBtn')}</span>
               </button>
             </div>
@@ -385,19 +388,22 @@ export default function CustomerDetailPage({ customerId, onBack }) {
           className={`tab-btn ${activeTab === 'credits' ? 'active' : ''}`}
           onClick={() => setActiveTab('credits')}
         >
-          {t('customerDetail.tabs.credits')} ({credits.length})
+          <span>{t('customerDetail.tabs.credits')}</span>
+          <span>({credits.length})</span>
         </button>
         <button
           className={`tab-btn ${activeTab === 'payments' ? 'active' : ''}`}
           onClick={() => setActiveTab('payments')}
         >
-          {t('customerDetail.tabs.payments')} ({payments.length})
+          <span>{t('customerDetail.tabs.payments')}</span>
+          <span>({payments.length})</span>
         </button>
         <button
           className={`tab-btn ${activeTab === 'activity' ? 'active' : ''}`}
           onClick={() => setActiveTab('activity')}
         >
-          {t('customerDetail.tabs.activity')} ({activities.length})
+          <span>{t('customerDetail.tabs.activity')}</span>
+          <span>({activities.length})</span>
         </button>
       </div>
 
@@ -405,7 +411,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
       {activeTab === 'credits' && (
         <div>
           {credits.length === 0 ? (
-            <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            <div className="card" style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
               <p>{t('customerDetail.noCredits')}</p>
             </div>
           ) : (
@@ -436,7 +442,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                       </td>
                       <td>{formatDate(cr.credit_date)}</td>
                       <td style={{ textAlign: 'right' }}>
-                        <div style={{ display: 'inline-flex', gap: '0.25rem' }}>
+                        <div style={{ display: 'inline-flex', gap: '0.2rem' }}>
                           <button
                             className="btn-icon"
                             onClick={() => {
@@ -470,7 +476,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
       {activeTab === 'payments' && (
         <div>
           {payments.length === 0 ? (
-            <div className="card" style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            <div className="card" style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
               <p>{t('customerDetail.noPayments')}</p>
             </div>
           ) : (
@@ -488,7 +494,7 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                 <tbody>
                   {payments.map((p) => (
                     <tr key={p.id}>
-                      <td style={{ fontWeight: 700, color: 'var(--color-primary)', fontSize: '1rem' }}>
+                      <td style={{ fontWeight: 700, color: 'var(--color-primary)', fontSize: '0.95rem' }}>
                         +{formatCurrency(p.amount_paid)}
                       </td>
                       <td>{formatDate(p.payment_date)}</td>
@@ -515,28 +521,28 @@ export default function CustomerDetailPage({ customerId, onBack }) {
 
       {/* TAB 3: ACTIVITY */}
       {activeTab === 'activity' && (
-        <div className="card">
+        <div className="card" style={{ padding: '1rem' }}>
           {activities.length === 0 ? (
-            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            <div style={{ padding: '2rem 1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
               <p>{t('activity.empty')}</p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {activities.map((act) => (
                 <div
                   key={act.id}
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '0.75rem',
-                    paddingBottom: '0.85rem',
+                    gap: '0.65rem',
+                    paddingBottom: '0.75rem',
                     borderBottom: '1px solid var(--border-subtle)',
                   }}
                 >
                   <div
                     style={{
-                      width: '32px',
-                      height: '32px',
+                      width: '30px',
+                      height: '30px',
                       borderRadius: 'var(--radius-sm)',
                       background: 'var(--bg-surface-elevated)',
                       display: 'flex',
@@ -546,13 +552,13 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                       flexShrink: 0,
                     }}
                   >
-                    <Clock size={16} />
+                    <Clock size={15} />
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-primary)' }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-primary)' }}>
                       {act.details}
                     </div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+                    <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
                       {formatDate(act.created_at)} • {act.user_name || 'Admin'}
                     </div>
                   </div>

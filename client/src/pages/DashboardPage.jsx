@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 export default function DashboardPage({ setActivePage, onSelectCustomer }) {
-  const { t, formatCurrency, formatDate } = useLanguage();
+  const { t, formatCurrency, formatDate, lang } = useLanguage();
   const { user } = useAuth();
 
   const [summary, setSummary] = useState(null);
@@ -111,7 +111,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
   return (
     <div className="dashboard-page">
       {/* Top Banner with Shopkeeper Greeting & Primary Actions */}
-      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
+      <div className="page-header">
         <div>
           <h1 className="page-title">{t('dashboard.overview')}</h1>
           <p className="page-subtitle">
@@ -119,14 +119,13 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
           </p>
         </div>
 
-        {/* 2 Big Primary Action Buttons (Responsive grid on mobile, flex on desktop) */}
+        {/* 2 Big Primary Action Buttons (Responsive grid / stack on mobile, flex on desktop) */}
         <div className="hero-action-buttons">
           <button
             className="btn btn-primary"
             onClick={(e) => handleOpenCredit(e, null)}
-            style={{ padding: '0.65rem 1.15rem', fontSize: '0.95rem', fontWeight: 600 }}
           >
-            <PlusCircle size={18} />
+            <PlusCircle size={18} style={{ flexShrink: 0 }} />
             <span>{t('dashboard.recordCredit')}</span>
           </button>
 
@@ -135,24 +134,18 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
             style={{
               background: 'linear-gradient(135deg, #0ea5e9, #0284c7)',
               color: '#ffffff',
-              padding: '0.65rem 1.15rem',
-              fontSize: '0.95rem',
-              fontWeight: 600,
               boxShadow: '0 4px 14px rgba(14, 165, 233, 0.35)',
             }}
             onClick={(e) => handleOpenPayment(e, null)}
           >
-            <Receipt size={18} />
+            <Receipt size={18} style={{ flexShrink: 0 }} />
             <span>{t('dashboard.receivePayment')}</span>
           </button>
         </div>
       </div>
 
       {/* 3 Clean Summary Stat Cards */}
-      <div
-        className="stats-grid"
-        style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', marginBottom: '1.75rem' }}
-      >
+      <div className="stats-grid">
         <StatCard
           label={t('dashboard.totalOutstanding')}
           value={formatCurrency(outstanding)}
@@ -182,22 +175,22 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
       </div>
 
       {/* Main Active Debt Ledger */}
-      <div className="card" style={{ marginBottom: '1.75rem', padding: '1.25rem' }}>
+      <div className="card" style={{ marginBottom: '1.25rem' }}>
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '1rem',
-            marginBottom: '1.25rem',
+            gap: '0.85rem',
+            marginBottom: '1rem',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <div
               style={{
-                width: '42px',
-                height: '42px',
+                width: '38px',
+                height: '38px',
                 borderRadius: 'var(--radius-md)',
                 background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15))',
                 border: '1px solid rgba(239, 68, 68, 0.25)',
@@ -208,13 +201,13 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                 flexShrink: 0,
               }}
             >
-              <Users size={20} />
+              <Users size={19} />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <h2
                   style={{
-                    fontSize: '1.25rem',
+                    fontSize: '1.15rem',
                     fontWeight: 700,
                     color: 'var(--text-primary)',
                     letterSpacing: '-0.02em',
@@ -228,7 +221,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                   style={{
                     fontSize: '0.75rem',
                     fontWeight: 700,
-                    padding: '0.15rem 0.6rem',
+                    padding: '0.15rem 0.55rem',
                     borderRadius: '999px',
                     background: 'var(--color-danger-subtle)',
                     color: 'var(--color-danger)',
@@ -238,15 +231,15 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                   {debtors.length}
                 </span>
               </div>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: '0.15rem 0 0 0' }}>
                 {t('dashboard.topDebtorsSubtitle')}
               </p>
             </div>
           </div>
 
           {/* Quick Search inside Ledger */}
-          <div className="search-wrapper" style={{ maxWidth: '340px' }}>
-            <Search size={18} className="search-icon" />
+          <div className="search-wrapper" style={{ flex: '1 1 220px', maxWidth: '340px' }}>
+            <Search size={17} className="search-icon" />
             <input
               type="text"
               className="form-input search-input"
@@ -258,18 +251,18 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
         </div>
 
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+          <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
             {t('common.loading')}
           </div>
         ) : filteredDebtors.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            <UserCheck size={40} style={{ color: 'var(--color-primary)', margin: '0 auto 0.75rem', opacity: 0.8 }} />
-            <p style={{ fontWeight: 500 }}>
+          <div style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+            <UserCheck size={36} style={{ color: 'var(--color-primary)', margin: '0 auto 0.65rem', opacity: 0.8 }} />
+            <p style={{ fontWeight: 500, fontSize: '0.9rem' }}>
               {searchTerm ? t('customers.noCustomersFound') : t('dashboard.noDebts')}
             </p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
             {filteredDebtors.map((debtor) => {
               const bal = parseFloat(debtor.balance || 0);
 
@@ -281,15 +274,12 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                 >
                   {/* Left / Top: Customer Info */}
                   <div className="debtor-card-info">
-                    <div
-                      className="customer-avatar"
-                      style={{ width: '40px', height: '40px', fontSize: '1.05rem' }}
-                    >
+                    <div className="customer-avatar">
                       {debtor.name.charAt(0).toUpperCase()}
                     </div>
 
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {debtor.name}
                       </div>
 
@@ -297,8 +287,8 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                         style={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '0.65rem',
-                          fontSize: '0.8rem',
+                          gap: '0.5rem',
+                          fontSize: '0.78rem',
                           color: 'var(--text-secondary)',
                           marginTop: '0.15rem',
                           flexWrap: 'wrap',
@@ -328,15 +318,15 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                   {/* Right / Bottom: Debt amount and fast action buttons */}
                   <div className="debtor-card-actions">
                     <div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--color-danger)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--color-danger)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         {t('dashboard.debt')}
                       </div>
-                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-danger)', lineHeight: 1.1 }}>
+                      <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--color-danger)', lineHeight: 1.1 }}>
                         {formatCurrency(bal)}
                       </div>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={(e) => handleOpenPayment(e, debtor.id)}
@@ -361,13 +351,13 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
         )}
       </div>
 
-      {/* Recent Activity Dropdown Accordion (Touch to drop down today's activities) */}
+      {/* Recent Activity Dropdown Accordion */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         {/* Clickable / Touchable Dropdown Header */}
         <div
           onClick={() => setIsActivityOpen(!isActivityOpen)}
           style={{
-            padding: '1rem 1.25rem',
+            padding: '0.85rem 1rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -375,6 +365,8 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
             userSelect: 'none',
             background: isActivityOpen ? 'var(--bg-surface-elevated)' : 'transparent',
             transition: 'background var(--transition-fast)',
+            flexWrap: 'wrap',
+            gap: '0.5rem',
           }}
         >
           {(() => {
@@ -386,7 +378,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
 
             return (
               <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                   <div
                     style={{
                       width: '32px',
@@ -397,17 +389,18 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      flexShrink: 0,
                     }}
                   >
                     <Clock size={16} />
                   </div>
                   <div>
-                    <span style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                    <span style={{ fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>
                       {t('dashboard.recentActivity')}
                     </span>
                     <span
                       style={{
-                        marginLeft: '0.5rem',
+                        marginLeft: '0.45rem',
                         fontSize: '0.75rem',
                         fontWeight: 700,
                         padding: '0.15rem 0.5rem',
@@ -421,21 +414,21 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
                   <button
                     className="btn btn-sm btn-secondary"
                     onClick={(e) => {
                       e.stopPropagation();
                       setActivePage('activity');
                     }}
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.8rem' }}
                   >
                     <span>{t('dashboard.viewAll')}</span>
                     <ArrowRight size={13} />
                   </button>
 
                   <div style={{ color: 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}>
-                    {isActivityOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    {isActivityOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                   </div>
                 </div>
               </>
@@ -445,7 +438,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
 
         {/* Collapsible Dropdown Content */}
         {isActivityOpen && (
-          <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid var(--border-subtle)', background: 'var(--bg-surface)' }}>
+          <div style={{ padding: '0.85rem 1rem', borderTop: '1px solid var(--border-subtle)', background: 'var(--bg-surface)' }}>
             {(() => {
               const todayDateStr = new Date().toISOString().split('T')[0];
               const todayActivities = recentActivities.filter((act) => {
@@ -455,8 +448,8 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
 
               if (todayActivities.length === 0) {
                 return (
-                  <div style={{ textAlign: 'center', padding: '1.5rem', color: 'var(--text-secondary)' }}>
-                    <p style={{ fontSize: '0.875rem', marginBottom: '0.75rem' }}>
+                  <div style={{ textAlign: 'center', padding: '1.25rem 0.5rem', color: 'var(--text-secondary)' }}>
+                    <p style={{ fontSize: '0.85rem', marginBottom: '0.65rem' }}>
                       {t('dashboard.noActivityToday')}
                     </p>
                     <button
@@ -472,12 +465,11 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
               }
 
               return (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
                   {todayActivities.map((act) => {
                     const custName = act.customer_name || 'Customer';
                     const isPayment = act.action?.includes('PAYMENT');
                     
-                    // Clean up trailing "for [Name]" or "from [Name]" if present in details
                     let cleanDetails = act.details || '';
                     if (act.customer_name) {
                       cleanDetails = cleanDetails
@@ -485,7 +477,6 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                         .replace(new RegExp(`^Created customer:\\s*${act.customer_name}`, 'i'), t('activity.CREATE_CUSTOMER'));
                     }
 
-                    // Format time if today
                     let timeStr = '';
                     try {
                       if (act.created_at) {
@@ -504,21 +495,21 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '0.65rem 0.85rem',
+                          padding: '0.65rem 0.75rem',
                           borderRadius: 'var(--radius-sm)',
                           background: 'var(--bg-surface-elevated)',
                           fontSize: '0.85rem',
                           flexWrap: 'wrap',
-                          gap: '0.5rem',
+                          gap: '0.45rem',
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: '1 1 240px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flex: '1 1 220px', minWidth: 0 }}>
                           <div
                             className="customer-avatar"
                             style={{
-                              width: '30px',
-                              height: '30px',
-                              fontSize: '0.85rem',
+                              width: '28px',
+                              height: '28px',
+                              fontSize: '0.8rem',
                               background: isPayment ? 'var(--color-primary-subtle)' : 'var(--color-warning-subtle)',
                               color: isPayment ? 'var(--color-primary)' : 'var(--color-warning)',
                               border: 'none',
@@ -528,7 +519,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                             {custName.charAt(0).toUpperCase()}
                           </div>
 
-                          <div>
+                          <div style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {act.customer_id ? (
                               <button
                                 onClick={() => onSelectCustomer(act.customer_id)}
@@ -539,33 +530,32 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                                   textAlign: 'left',
                                   display: 'inline',
                                   marginRight: '0.35rem',
-                                  fontSize: '0.88rem',
+                                  fontSize: '0.85rem',
                                   textDecoration: 'underline',
                                 }}
                               >
                                 {custName}:
                               </button>
                             ) : (
-                              <strong style={{ color: 'var(--text-primary)', marginRight: '0.35rem' }}>
+                              <strong style={{ color: 'var(--text-primary)', marginRight: '0.35rem', fontSize: '0.85rem' }}>
                                 {custName}:
                               </strong>
                             )}
-                            <span style={{ color: 'var(--text-secondary)' }}>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.82rem' }}>
                               {cleanDetails}
                             </span>
                           </div>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.75rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                          <Clock size={13} style={{ color: 'var(--color-primary)' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontSize: '0.74rem', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                          <Clock size={12} style={{ color: 'var(--color-primary)' }} />
                           <span>{timeStr || formatDate(act.created_at)}</span>
                         </div>
                       </div>
                     );
                   })}
 
-                  {/* Show More link at the bottom of the dropdown list */}
-                  <div style={{ textAlign: 'center', paddingTop: '0.5rem', borderTop: '1px solid var(--border-subtle)', marginTop: '0.25rem' }}>
+                  <div style={{ textAlign: 'center', paddingTop: '0.4rem', borderTop: '1px solid var(--border-subtle)', marginTop: '0.2rem' }}>
                     <button
                       className="btn btn-sm btn-secondary"
                       onClick={() => setActivePage('activity')}

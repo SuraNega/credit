@@ -26,7 +26,6 @@ export default function PaymentModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Load customer list when opened without a pre-selected customer
   useEffect(() => {
     if (isOpen) {
       if (!customerId) {
@@ -46,7 +45,6 @@ export default function PaymentModal({
     }
   }, [isOpen, customerId]);
 
-  // Load customer details and their active credits whenever customerId changes
   useEffect(() => {
     const activeCustId = customerId || selectedCustomerId;
     if (activeCustId && isOpen) {
@@ -60,7 +58,6 @@ export default function PaymentModal({
           const activeCredits = (credRes.data || []).filter((c) => c.status !== 'paid');
           setCustomerCredits(activeCredits);
 
-          // Pre-suggest full balance if there is a debt
           const bal = parseFloat(cust.balance || 0);
           if (bal > 0) {
             setAmountPaid(bal.toString());
@@ -114,7 +111,6 @@ export default function PaymentModal({
 
       const res = await paymentsAPI.create(activeCustId, payload);
 
-      // Trigger celebration confetti
       try {
         confetti({
           particleCount: 50,
@@ -187,19 +183,19 @@ export default function PaymentModal({
           {selectedCustomer && (
             <div
               style={{
-                padding: '1rem',
+                padding: '0.85rem 1rem',
                 borderRadius: 'var(--radius-md)',
                 background: currentDebt > 0 ? 'var(--color-danger-subtle)' : 'var(--color-primary-subtle)',
                 border: '1px solid ' + (currentDebt > 0 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(16, 185, 129, 0.2)'),
-                marginBottom: '1.25rem',
+                marginBottom: '1rem',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.8rem', color: currentDebt > 0 ? 'var(--color-danger)' : 'var(--color-primary)', fontWeight: 600 }}>
+                  <div style={{ fontSize: '0.78rem', color: currentDebt > 0 ? 'var(--color-danger)' : 'var(--color-primary)', fontWeight: 600 }}>
                     {t('payments.currentDebt')}
                   </div>
-                  <div style={{ fontSize: '1.4rem', fontWeight: 800, color: currentDebt > 0 ? 'var(--color-danger)' : 'var(--color-primary)' }}>
+                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: currentDebt > 0 ? 'var(--color-danger)' : 'var(--color-primary)', lineHeight: 1.1 }}>
                     {formatCurrency(currentDebt)}
                   </div>
                 </div>
@@ -210,7 +206,7 @@ export default function PaymentModal({
                     className="btn btn-sm btn-primary"
                     onClick={handlePayFull}
                   >
-                    <CheckCircle2 size={15} />
+                    <CheckCircle2 size={14} />
                     <span>{t('payments.payFull')}</span>
                   </button>
                 )}
@@ -270,12 +266,14 @@ export default function PaymentModal({
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0.65rem 0.85rem',
+                padding: '0.6rem 0.8rem',
                 borderRadius: 'var(--radius-sm)',
                 background: 'var(--bg-surface-elevated)',
                 border: '1px solid var(--border-subtle)',
-                fontSize: '0.85rem',
-                marginBottom: '1.15rem',
+                fontSize: '0.82rem',
+                marginBottom: '1rem',
+                flexWrap: 'wrap',
+                gap: '0.35rem',
               }}
             >
               <span style={{ color: 'var(--text-secondary)' }}>Remaining after payment:</span>
@@ -310,13 +308,14 @@ export default function PaymentModal({
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading}>
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading} style={{ flex: '1 1 auto' }}>
             {t('common.cancel')}
           </button>
           <button
             type="submit"
             className="btn btn-primary"
             disabled={loading || !selectedCustomer}
+            style={{ flex: '1 1 auto' }}
           >
             {loading ? t('common.saving') : t('payments.recordPayment')}
           </button>

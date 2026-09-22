@@ -74,7 +74,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="settings-page" style={{ maxWidth: '680px' }}>
+    <div className="settings-page" style={{ maxWidth: '680px', margin: '0 auto', width: '100%' }}>
       <div className="page-header">
         <div>
           <h1 className="page-title">{t('settings.title')}</h1>
@@ -82,10 +82,10 @@ export default function SettingsPage() {
       </div>
 
       {/* Profile Section */}
-      <div className="card" style={{ marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
-          <User size={20} style={{ color: 'var(--color-primary)' }} />
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+      <div className="card" style={{ marginBottom: '1.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.15rem' }}>
+          <User size={19} style={{ color: 'var(--color-primary)' }} />
+          <h2 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             {t('settings.profileInfo')}
           </h2>
         </div>
@@ -93,15 +93,15 @@ export default function SettingsPage() {
         {profileSuccess && (
           <div
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.75rem 0.85rem',
               borderRadius: 'var(--radius-md)',
               background: 'var(--color-primary-subtle)',
               color: 'var(--color-primary)',
-              fontSize: '0.875rem',
+              fontSize: '0.85rem',
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.45rem',
             }}
           >
             <Check size={16} />
@@ -112,15 +112,15 @@ export default function SettingsPage() {
         {profileError && (
           <div
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.75rem 0.85rem',
               borderRadius: 'var(--radius-md)',
               background: 'var(--color-danger-subtle)',
               color: 'var(--color-danger)',
-              fontSize: '0.875rem',
+              fontSize: '0.85rem',
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.45rem',
             }}
           >
             <AlertCircle size={16} />
@@ -168,7 +168,7 @@ export default function SettingsPage() {
             </select>
           </div>
 
-          <button type="submit" className="btn btn-primary" disabled={profileLoading}>
+          <button type="submit" className="btn btn-primary" disabled={profileLoading} style={{ width: '100%', minHeight: '42px' }}>
             {profileLoading ? t('common.saving') : t('settings.saveChanges')}
           </button>
         </form>
@@ -176,9 +176,9 @@ export default function SettingsPage() {
 
       {/* Password Change Section */}
       <div className="card">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1.25rem' }}>
-          <Lock size={20} style={{ color: 'var(--color-accent)' }} />
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.15rem' }}>
+          <Lock size={19} style={{ color: 'var(--color-accent)' }} />
+          <h2 style={{ fontSize: '1.05rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
             {t('settings.security')}
           </h2>
         </div>
@@ -186,15 +186,15 @@ export default function SettingsPage() {
         {passSuccess && (
           <div
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.75rem 0.85rem',
               borderRadius: 'var(--radius-md)',
               background: 'var(--color-primary-subtle)',
               color: 'var(--color-primary)',
-              fontSize: '0.875rem',
+              fontSize: '0.85rem',
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.45rem',
             }}
           >
             <Check size={16} />
@@ -205,15 +205,15 @@ export default function SettingsPage() {
         {passError && (
           <div
             style={{
-              padding: '0.75rem 1rem',
+              padding: '0.75rem 0.85rem',
               borderRadius: 'var(--radius-md)',
               background: 'var(--color-danger-subtle)',
               color: 'var(--color-danger)',
-              fontSize: '0.875rem',
+              fontSize: '0.85rem',
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
-              gap: '0.5rem',
+              gap: '0.45rem',
             }}
           >
             <AlertCircle size={16} />
@@ -257,7 +257,7 @@ export default function SettingsPage() {
             />
           </div>
 
-          <button type="submit" className="btn btn-secondary" disabled={passLoading}>
+          <button type="submit" className="btn btn-secondary" disabled={passLoading} style={{ width: '100%', minHeight: '42px' }}>
             {passLoading ? t('common.saving') : t('settings.changePassword')}
           </button>
         </form>

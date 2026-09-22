@@ -83,7 +83,11 @@ export default function CustomersPage({ onSelectCustomer }) {
         </div>
 
         <div className="page-actions">
-          <button className="btn btn-primary" onClick={() => setIsCustomerModalOpen(true)}>
+          <button
+            className="btn btn-primary"
+            onClick={() => setIsCustomerModalOpen(true)}
+            style={{ width: '100%', justifyContent: 'center' }}
+          >
             <UserPlus size={18} />
             <span>{t('customers.addCustomer')}</span>
           </button>
@@ -94,16 +98,16 @@ export default function CustomersPage({ onSelectCustomer }) {
       <div
         className="card"
         style={{
-          padding: '1rem',
-          marginBottom: '1.5rem',
+          padding: '0.85rem 1rem',
+          marginBottom: '1.25rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '0.75rem',
         }}
       >
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div className="search-wrapper" style={{ flex: '1 1 260px' }}>
-            <Search size={18} className="search-icon" />
+        <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <div className="search-wrapper" style={{ flex: '1 1 240px' }}>
+            <Search size={17} className="search-icon" />
             <input
               type="text"
               className="form-input search-input"
@@ -113,29 +117,45 @@ export default function CustomersPage({ onSelectCustomer }) {
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', overflowX: 'auto', paddingBottom: '2px' }}>
-            <Filter size={16} style={{ color: 'var(--text-muted)', marginRight: '0.2rem' }} />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              overflowX: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              paddingBottom: '2px',
+              maxWidth: '100%',
+              width: 'auto',
+            }}
+          >
+            <Filter size={15} style={{ color: 'var(--text-muted)', flexShrink: 0, marginRight: '0.15rem' }} />
             <button
               className={`btn btn-sm ${statusFilter === 'all' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setStatusFilter('all')}
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               {t('customers.allStatus')}
             </button>
             <button
               className={`btn btn-sm ${statusFilter === 'active' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setStatusFilter('active')}
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               {t('customers.active')}
             </button>
             <button
               className={`btn btn-sm ${statusFilter === 'has_debt' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setStatusFilter('has_debt')}
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               {t('customers.hasDebtOnly')}
             </button>
             <button
               className={`btn btn-sm ${statusFilter === 'blacklisted' ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => setStatusFilter('blacklisted')}
+              style={{ whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               {t('customers.blacklisted')}
             </button>
@@ -145,27 +165,27 @@ export default function CustomersPage({ onSelectCustomer }) {
 
       {/* Customers List / Grid */}
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <div style={{ padding: '3rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
           {t('common.loading')}
         </div>
       ) : customers.length === 0 ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
+        <div className="card" style={{ padding: '3rem 1rem', textAlign: 'center' }}>
           <div
             style={{
-              width: '48px',
-              height: '48px',
+              width: '46px',
+              height: '46px',
               borderRadius: '50%',
               background: 'var(--bg-surface-elevated)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 1rem',
+              margin: '0 auto 0.85rem',
               color: 'var(--text-muted)',
             }}
           >
-            <User size={24} />
+            <User size={22} />
           </div>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
             {searchTerm || statusFilter !== 'all'
               ? t('customers.noCustomersFound')
               : t('customers.emptyState')}
@@ -189,13 +209,15 @@ export default function CustomersPage({ onSelectCustomer }) {
                       <div className="customer-avatar">
                         {c.name.charAt(0).toUpperCase()}
                       </div>
-                      <div>
+                      <div style={{ minWidth: 0 }}>
                         <h2 className="customer-name">{c.name}</h2>
                         <div className="customer-sub">
                           {c.phone ? (
                             <>
-                              <Phone size={13} />
-                              <span>{formatEthiopianPhone(c.phone)}</span>
+                              <Phone size={12} style={{ flexShrink: 0 }} />
+                              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {formatEthiopianPhone(c.phone)}
+                              </span>
                             </>
                           ) : (
                             <span style={{ color: 'var(--text-muted)' }}>No phone</span>
@@ -211,13 +233,16 @@ export default function CustomersPage({ onSelectCustomer }) {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.4rem',
-                        fontSize: '0.8rem',
+                        gap: '0.35rem',
+                        fontSize: '0.78rem',
                         color: 'var(--text-muted)',
-                        marginTop: '0.75rem',
+                        marginTop: '0.65rem',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                       }}
                     >
-                      <MapPin size={13} />
+                      <MapPin size={12} style={{ flexShrink: 0 }} />
                       <span>
                         {c.block ? `${c.block}` : ''}
                         {c.block && c.house_number ? ', ' : ''}
@@ -229,7 +254,7 @@ export default function CustomersPage({ onSelectCustomer }) {
 
                 <div>
                   <div className="customer-balance-box">
-                    <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                       {t('customers.balance')}
                     </span>
                     <span className={`customer-balance-val ${hasDebt ? 'balance-has-debt' : 'balance-cleared'}`}>
@@ -238,21 +263,21 @@ export default function CustomersPage({ onSelectCustomer }) {
                   </div>
 
                   {/* Quick card action buttons */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginTop: '0.75rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.45rem', marginTop: '0.65rem' }}>
                     <button
                       className="btn btn-sm btn-secondary"
                       onClick={(e) => handleOpenCredit(e, c.id)}
                       disabled={c.status === 'blacklisted'}
                     >
-                      <Plus size={14} />
-                      <span>{t('credits.recordCredit')}</span>
+                      <Plus size={14} style={{ flexShrink: 0 }} />
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('credits.recordCredit')}</span>
                     </button>
                     <button
                       className="btn btn-sm btn-secondary"
                       onClick={(e) => handleOpenPayment(e, c.id)}
                     >
-                      <Receipt size={14} />
-                      <span>{t('payments.recordPayment')}</span>
+                      <Receipt size={14} style={{ flexShrink: 0 }} />
+                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{t('payments.recordPayment')}</span>
                     </button>
                   </div>
                 </div>

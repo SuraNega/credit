@@ -88,6 +88,7 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
       isOpen={isOpen}
       onClose={onClose}
       title={customer ? t('customers.editCustomer') : t('customers.addCustomer')}
+      maxWidth="500px"
     >
       <form onSubmit={handleSubmit}>
         <div className="modal-body">
@@ -127,7 +128,7 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
             onChange={(normalizedPhone) => setFormData({ ...formData, phone: normalizedPhone })}
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">{t('customers.block')}</label>
               <input
@@ -176,10 +177,10 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
         </div>
 
         <div className="modal-footer">
-          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading}>
+          <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading} style={{ flex: '1 1 auto' }}>
             {t('common.cancel')}
           </button>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ flex: '1 1 auto' }}>
             {loading ? t('common.saving') : t('common.save')}
           </button>
         </div>

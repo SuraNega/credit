@@ -30,7 +30,7 @@ export default function Navbar({ activePage, setActivePage }) {
     <header className="navbar">
       <div className="nav-brand" role="button" onClick={() => setActivePage('dashboard')} style={{ cursor: 'pointer' }}>
         <div className="brand-icon-wrap">
-          <CreditCard size={20} />
+          <CreditCard size={18} />
         </div>
         <span className="brand-text">{t('app.title')}</span>
       </div>
@@ -60,7 +60,7 @@ export default function Navbar({ activePage, setActivePage }) {
           title={lang === 'en' ? 'ወደ አማርኛ ቀይር' : 'Switch to English'}
           aria-label="Toggle language"
         >
-          <Globe size={15} />
+          <Globe size={14} style={{ flexShrink: 0 }} />
           <span>{lang === 'en' ? 'አማርኛ' : 'English'}</span>
         </button>
 
@@ -70,17 +70,18 @@ export default function Navbar({ activePage, setActivePage }) {
           onClick={toggleTheme}
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           aria-label="Toggle theme"
+          style={{ minWidth: '32px', minHeight: '32px', padding: '0.35rem' }}
         >
-          {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
+          {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
         </button>
 
         {/* User Info & Logout */}
         {user && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginLeft: '0.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginLeft: '0.2rem' }}>
             <div
               style={{
-                width: '34px',
-                height: '34px',
+                width: '30px',
+                height: '30px',
                 borderRadius: '50%',
                 background: 'var(--color-primary-subtle)',
                 border: '1px solid var(--color-primary)',
@@ -89,7 +90,8 @@ export default function Navbar({ activePage, setActivePage }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontWeight: '700',
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
+                flexShrink: 0,
               }}
               title={user.name || user.username}
             >
@@ -101,9 +103,9 @@ export default function Navbar({ activePage, setActivePage }) {
               onClick={logout}
               title={t('nav.logout')}
               aria-label={t('nav.logout')}
-              style={{ color: 'var(--color-danger)' }}
+              style={{ color: 'var(--color-danger)', minWidth: '32px', minHeight: '32px', padding: '0.35rem' }}
             >
-              <LogOut size={18} />
+              <LogOut size={16} />
             </button>
           </div>
         )}
