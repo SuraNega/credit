@@ -14,11 +14,11 @@ VALUES (
 ) ON CONFLICT (username) DO NOTHING;
 
 -- Insert sample customers
-INSERT INTO customers (name, phone, block, house_number, language, status, notes)
+INSERT INTO customers (name, phone, block, language, status, notes)
 VALUES
-  ('Abebe Kebede',   '0911223344', 'Block A', '12',  'am', 'active', 'Regular customer'),
-  ('Fatima Hassan',  '0922334455', 'Block B', '7',   'am', 'active', 'Pays on time'),
-  ('Yonas Tesfaye',  '0933445566', 'Block A', '22',  'am', 'active', NULL);
+  ('Abebe Kebede',   '0911223344', 'Block A', 'am', 'active', 'Regular customer'),
+  ('Fatima Hassan',  '0922334455', 'Block B', 'am', 'active', 'Pays on time'),
+  ('Yonas Tesfaye',  '0933445566', 'Block A', 'am', 'active', NULL);
 
 -- Insert sample credit transactions (created by admin, user id = 1)
 INSERT INTO credit_transactions (customer_id, item, amount, credit_date, due_date, status, created_by)

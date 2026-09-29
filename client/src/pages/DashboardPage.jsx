@@ -84,8 +84,7 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
               d.name?.toLowerCase().includes(q) ||
               d.phone?.includes(q) ||
               (qNational && d.phone && d.phone.replace(/[\s\-\(\)\.]/g, '').includes(qNational)) ||
-              d.block?.toLowerCase().includes(q) ||
-              d.house_number?.toLowerCase().includes(q)
+              d.block?.toLowerCase().includes(q)
           )
         );
       }
@@ -301,14 +300,10 @@ export default function DashboardPage({ setActivePage, onSelectCustomer }) {
                           </span>
                         )}
 
-                        {(debtor.block || debtor.house_number) && (
+                        {debtor.block && (
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                             <MapPin size={12} />
-                            <span>
-                              {debtor.block ? `${debtor.block}` : ''}
-                              {debtor.block && debtor.house_number ? ' ' : ''}
-                              {debtor.house_number ? `#${debtor.house_number}` : ''}
-                            </span>
+                            <span>{debtor.block}</span>
                           </span>
                         )}
                       </div>

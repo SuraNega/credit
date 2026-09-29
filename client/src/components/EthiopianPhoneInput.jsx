@@ -74,7 +74,13 @@ export default function EthiopianPhoneInput({
       <label className="form-label">
         <span>
           {label || t('customers.phone')}
-          {required && <span style={{ color: 'var(--color-danger)', marginLeft: '0.25rem' }}>*</span>}
+          {required ? (
+            <span style={{ color: 'var(--color-danger)', marginLeft: '0.25rem' }}>*</span>
+          ) : (
+            <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginLeft: '0.35rem', fontWeight: 400 }}>
+              ({t('common.optional')})
+            </span>
+          )}
         </span>
       </label>
 

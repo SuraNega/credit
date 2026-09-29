@@ -228,7 +228,7 @@ export default function CustomersPage({ onSelectCustomer }) {
                     <StatusBadge status={c.status} type="customer" />
                   </div>
 
-                  {(c.block || c.house_number) && (
+                  {c.block && (
                     <div
                       style={{
                         display: 'flex',
@@ -243,11 +243,7 @@ export default function CustomersPage({ onSelectCustomer }) {
                       }}
                     >
                       <MapPin size={12} style={{ flexShrink: 0 }} />
-                      <span>
-                        {c.block ? `${c.block}` : ''}
-                        {c.block && c.house_number ? ', ' : ''}
-                        {c.house_number ? `House #${c.house_number}` : ''}
-                      </span>
+                      <span>{c.block}</span>
                     </div>
                   )}
                 </div>

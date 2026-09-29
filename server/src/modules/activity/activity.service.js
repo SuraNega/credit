@@ -15,8 +15,7 @@ export async function listActivity({ page = 1, limit = 30 }) {
        u.name AS user_name,
        c.name AS customer_name,
        c.phone AS customer_phone,
-       c.block AS customer_block,
-       c.house_number AS customer_house_number
+       c.block AS customer_block
      FROM activity_log al
      LEFT JOIN users u ON u.id = al.user_id
      LEFT JOIN customers c ON c.id = al.customer_id
@@ -124,7 +123,6 @@ export async function getTopDebtors(limit = 10) {
        c.name,
        c.phone,
        c.block,
-       c.house_number,
        c.status,
        COALESCE(cr.total_credit, 0) AS total_credit,
        COALESCE(pa.total_paid, 0) AS total_paid,

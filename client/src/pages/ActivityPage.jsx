@@ -401,14 +401,10 @@ export default function ActivityPage({ onSelectCustomer }) {
                                     <span>{act.customer_phone}</span>
                                   </span>
                                 )}
-                                {(act.customer_block || act.customer_house_number) && (
+                                {act.customer_block && (
                                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.2rem' }}>
                                     <MapPin size={11} />
-                                    <span>
-                                      {act.customer_block ? act.customer_block : ''}
-                                      {act.customer_block && act.customer_house_number ? ' #' : ''}
-                                      {act.customer_house_number ? act.customer_house_number : ''}
-                                    </span>
+                                    <span>{act.customer_block}</span>
                                   </span>
                                 )}
                               </div>

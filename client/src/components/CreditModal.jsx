@@ -25,7 +25,6 @@ export default function CreditModal({
   // Form fields
   const [phone, setPhone] = useState('');
   const [block, setBlock] = useState('');
-  const [houseNumber, setHouseNumber] = useState('');
   const [item, setItem] = useState('');
   const [amount, setAmount] = useState('');
   const [creditDate, setCreditDate] = useState(() => new Date().toISOString().split('T')[0]);
@@ -42,7 +41,6 @@ export default function CreditModal({
         setCustomerName(credit.customer_name || '');
         setPhone(credit.customer_phone || '');
         setBlock('');
-        setHouseNumber('');
         setItem(credit.item || '');
         setAmount(credit.amount ? String(credit.amount) : '');
         setCreditDate(credit.credit_date ? credit.credit_date.split('T')[0] : new Date().toISOString().split('T')[0]);
@@ -56,7 +54,6 @@ export default function CreditModal({
             setCustomerName(c.name);
             setPhone(c.phone || '');
             setBlock(c.block || '');
-            setHouseNumber(c.house_number || '');
           })
           .catch((err) => {
             console.error('Failed to load customer in CreditModal:', err);
@@ -66,7 +63,6 @@ export default function CreditModal({
         setCustomerName('');
         setPhone('');
         setBlock('');
-        setHouseNumber('');
         setItem('');
         setAmount('');
         setCreditDate(new Date().toISOString().split('T')[0]);
@@ -117,7 +113,6 @@ export default function CreditModal({
     setCustomerName(c.name);
     setPhone(c.phone || '');
     setBlock(c.block || '');
-    setHouseNumber(c.house_number || '');
     setShowSuggestions(false);
   };
 
@@ -151,12 +146,7 @@ export default function CreditModal({
       let targetCustId = selectedCustomer?.id || customerId;
 
       if (!targetCustId) {
-        if (!phone.trim()) {
-          setError(t('common.required') + ': ' + t('credits.phone'));
-          setLoading(false);
-          return;
-        }
-        if (!isValidEthiopianPhone(phone)) {
+        if (phone && !isValidEthiopianPhone(phone)) {
           setError(t('customers.phoneInvalidCarrier') + ' — ' + t('customers.phoneIncomplete'));
           setLoading(false);
           return;
@@ -166,9 +156,8 @@ export default function CreditModal({
       if (!targetCustId) {
         const createRes = await customersAPI.create({
           name: customerName.trim(),
-          phone: phone.trim(),
+          phone: phone ? phone.trim() : null,
           block: block.trim() || null,
-          house_number: houseNumber.trim() || null,
           language: 'am',
         });
         targetCustId = createRes.data.id;
@@ -290,7 +279,7 @@ export default function CreditModal({
                         {c.name}
                       </div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-                        {c.phone || 'No phone'} {c.block ? `• ${c.block}` : ''} {c.house_number ? `#${c.house_number}` : ''}
+                        {c.phone || 'No phone'} {c.block ? `• ${c.block}` : ''}
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
@@ -356,35 +345,21 @@ export default function CreditModal({
           {/* Phone Input */}
           <EthiopianPhoneInput
             value={phone}
-            required={!selectedCustomer}
+            required={false}
             disabled={Boolean(selectedCustomer)}
             onChange={(normalized) => setPhone(normalized)}
           />
 
-          <div className="form-grid-2" style={{ marginBottom: '0.95rem' }}>
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">{t('credits.block')}</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="Block A"
-                disabled={Boolean(selectedCustomer)}
-                value={block}
-                onChange={(e) => setBlock(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">{t('credits.houseNumber')}</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="#12"
-                disabled={Boolean(selectedCustomer)}
-                value={houseNumber}
-                onChange={(e) => setHouseNumber(e.target.value)}
-              />
-            </div>
+          <div className="form-group" style={{ marginBottom: '0.95rem' }}>
+            <label className="form-label">{t('credits.block')}</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="Block A"
+              disabled={Boolean(selectedCustomer)}
+              value={block}
+              onChange={(e) => setBlock(e.target.value)}
+            />
           </div>
 
           {/* Item Taken & Amount */}

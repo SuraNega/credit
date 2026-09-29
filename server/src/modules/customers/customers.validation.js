@@ -4,15 +4,15 @@ import { isValidEthiopianPhone, normalizeEthiopianPhone } from '../../utils/phon
 export const createCustomerSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters').max(100),
   phone: z
-    .string({ required_error: 'Phone number is required' })
+    .string()
     .trim()
-    .min(1, 'Phone number is required')
-    .refine((val) => isValidEthiopianPhone(val), {
+    .optional()
+    .nullable()
+    .refine((val) => !val || isValidEthiopianPhone(val), {
       message: 'Invalid Ethiopian phone number. Must start with 9 (Ethio Telecom) or 7 (Safaricom) with 9 digits (e.g. +251 9... / 7...).',
     })
-    .transform((val) => normalizeEthiopianPhone(val)),
+    .transform((val) => (val ? normalizeEthiopianPhone(val) : null)),
   block: z.string().trim().max(50).optional().nullable(),
-  house_number: z.string().trim().max(20).optional().nullable(),
   language: z.string().max(10).default('am'),
   notes: z.string().trim().optional().nullable(),
 });
@@ -29,7 +29,6 @@ export const updateCustomerSchema = z.object({
     })
     .transform((val) => (val ? normalizeEthiopianPhone(val) : null)),
   block: z.string().trim().max(50).optional().nullable(),
-  house_number: z.string().trim().max(20).optional().nullable(),
   language: z.string().max(10).optional(),
   notes: z.string().trim().optional().nullable(),
 });

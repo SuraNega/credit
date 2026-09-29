@@ -118,13 +118,13 @@ export async function getCustomerById(customerId) {
  * Create a new customer.
  */
 export async function createCustomer(data, userId) {
-  const { name, phone, block, house_number, language, notes } = data;
+  const { name, phone, block, language, notes } = data;
 
   const result = await pool.query(
-    `INSERT INTO customers (name, phone, block, house_number, language, notes)
-     VALUES ($1, $2, $3, $4, $5, $6)
+    `INSERT INTO customers (name, phone, block, language, notes)
+     VALUES ($1, $2, $3, $4, $5)
      RETURNING *`,
-    [name, phone || null, block || null, house_number || null, language || 'am', notes || null]
+    [name, phone || null, block || null, language || 'am', notes || null]
   );
 
   const customer = result.rows[0];
@@ -151,7 +151,7 @@ export async function updateCustomer(customerId, data, userId) {
   const values = [];
   let paramIndex = 1;
 
-  const allowedFields = ['name', 'phone', 'block', 'house_number', 'language', 'notes'];
+  const allowedFields = ['name', 'phone', 'block', 'language', 'notes'];
 
   for (const field of allowedFields) {
     if (data[field] !== undefined) {

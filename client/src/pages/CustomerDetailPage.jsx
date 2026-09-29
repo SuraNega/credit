@@ -233,14 +233,10 @@ export default function CustomerDetailPage({ customerId, onBack }) {
                     </div>
                   )}
 
-                  {(customer.block || customer.house_number) && (
+                  {customer.block && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
                       <MapPin size={13} />
-                      <span>
-                        {customer.block ? `${customer.block}` : ''}
-                        {customer.block && customer.house_number ? ', ' : ''}
-                        {customer.house_number ? `#${customer.house_number}` : ''}
-                      </span>
+                      <span>{customer.block}</span>
                     </span>
                   )}
                 </div>

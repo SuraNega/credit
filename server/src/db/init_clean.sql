@@ -32,7 +32,6 @@ CREATE TABLE customers (
   name             VARCHAR(100) NOT NULL,
   phone            VARCHAR(20),
   block            VARCHAR(50),
-  house_number     VARCHAR(20),
   language         VARCHAR(10)  DEFAULT 'am',
   status           VARCHAR(20)  DEFAULT 'active'
                      CHECK (status IN ('active', 'blacklisted')),

@@ -11,7 +11,6 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
     name: '',
     phone: '',
     block: '',
-    house_number: '',
     language: 'am',
     notes: '',
   });
@@ -24,7 +23,6 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
         name: customer.name || '',
         phone: customer.phone || '',
         block: customer.block || '',
-        house_number: customer.house_number || '',
         language: customer.language || 'am',
         notes: customer.notes || '',
       });
@@ -33,7 +31,6 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
         name: '',
         phone: '',
         block: '',
-        house_number: '',
         language: 'am',
         notes: '',
       });
@@ -48,7 +45,7 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
       return;
     }
 
-    if (!formData.phone || !isValidEthiopianPhone(formData.phone)) {
+    if (formData.phone && !isValidEthiopianPhone(formData.phone)) {
       setError(t('customers.phoneInvalidCarrier') + ' — ' + t('customers.phoneIncomplete'));
       return;
     }
@@ -59,9 +56,8 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
     try {
       const payload = {
         name: formData.name.trim(),
-        phone: formData.phone.trim(),
+        phone: formData.phone?.trim() || null,
         block: formData.block.trim() || null,
-        house_number: formData.house_number.trim() || null,
         language: formData.language || 'am',
         notes: formData.notes.trim() || null,
       };
@@ -124,32 +120,19 @@ export default function CustomerModal({ isOpen, onClose, customer = null, onSave
 
           <EthiopianPhoneInput
             value={formData.phone}
-            required
+            required={false}
             onChange={(normalizedPhone) => setFormData({ ...formData, phone: normalizedPhone })}
           />
 
-          <div className="form-grid-2">
-            <div className="form-group">
-              <label className="form-label">{t('customers.block')}</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="e.g. Block A"
-                value={formData.block}
-                onChange={(e) => setFormData({ ...formData, block: e.target.value })}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">{t('customers.houseNumber')}</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="e.g. 12"
-                value={formData.house_number}
-                onChange={(e) => setFormData({ ...formData, house_number: e.target.value })}
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">{t('customers.block')}</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. Block A"
+              value={formData.block}
+              onChange={(e) => setFormData({ ...formData, block: e.target.value })}
+            />
           </div>
 
           <div className="form-group">
